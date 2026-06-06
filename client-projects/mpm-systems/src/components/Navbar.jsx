@@ -23,9 +23,9 @@ export default function Navbar() {
       top: 0, left: 0, right: 0,
       zIndex: 200,
       padding: scrolled ? '14px 48px' : '26px 48px',
-      background: scrolled ? 'rgba(5,5,5,0.96)' : 'transparent',
+      background: scrolled ? 'rgba(8,15,23,0.96)' : 'transparent',
       backdropFilter: scrolled ? 'blur(16px)' : 'none',
-      borderBottom: scrolled ? '1px solid rgba(201,168,76,0.1)' : 'none',
+      borderBottom: scrolled ? '1px solid rgba(212,136,42,0.12)' : 'none',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'space-between',
@@ -35,10 +35,10 @@ export default function Navbar() {
       <a href="#home" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 10 }}>
         <div style={{
           width: 34, height: 34,
-          border: '1px solid rgba(201,168,76,0.55)',
+          border: '1px solid rgba(212,136,42,0.55)',
           borderRadius: '50%',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          background: 'rgba(201,168,76,0.06)',
+          background: 'rgba(212,136,42,0.08)',
         }}>
           <span style={{ fontFamily: 'var(--font-display)', fontSize: 9, color: 'var(--gold)', fontWeight: 700, letterSpacing: '0.03em' }}>MPM</span>
         </div>
@@ -46,7 +46,7 @@ export default function Navbar() {
           <div style={{ fontFamily: 'var(--font-display)', fontSize: 14, fontWeight: 900, color: 'var(--white)', letterSpacing: '0.18em', lineHeight: 1 }}>
             MPM SYSTEMS
           </div>
-          <div style={{ fontFamily: 'var(--font-display)', fontSize: 7.5, color: 'rgba(201,168,76,0.6)', letterSpacing: '0.38em', marginTop: 3 }}>
+          <div style={{ fontFamily: 'var(--font-display)', fontSize: 7.5, color: 'rgba(212,136,42,0.65)', letterSpacing: '0.38em', marginTop: 3 }}>
             BY MAKING POWER MOVES LLC
           </div>
         </div>
@@ -60,12 +60,12 @@ export default function Navbar() {
             fontSize: 9,
             letterSpacing: '0.3em',
             textTransform: 'uppercase',
-            color: 'rgba(232,228,221,0.65)',
+            color: 'rgba(168,178,193,0.75)',
             textDecoration: 'none',
             transition: 'color 0.2s',
           }}
             onMouseEnter={e => (e.target.style.color = 'var(--gold)')}
-            onMouseLeave={e => (e.target.style.color = 'rgba(232,228,221,0.65)')}
+            onMouseLeave={e => (e.target.style.color = 'rgba(168,178,193,0.75)')}
           >{l.label}</a>
         ))}
         <a href="#contact" className="btn-gold" style={{ padding: '10px 24px', fontSize: 10 }}>Book a Call</a>
@@ -91,8 +91,8 @@ export default function Navbar() {
       {menuOpen && (
         <div style={{
           position: 'absolute', top: '100%', left: 0, right: 0,
-          background: 'rgba(5,5,5,0.98)',
-          borderBottom: '1px solid rgba(201,168,76,0.18)',
+          background: 'rgba(8,15,23,0.98)',
+          borderBottom: '1px solid rgba(212,136,42,0.18)',
           padding: '24px 40px',
           display: 'flex', flexDirection: 'column', gap: 20,
         }}>

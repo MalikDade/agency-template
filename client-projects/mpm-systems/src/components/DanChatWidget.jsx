@@ -45,25 +45,25 @@ export default function DanChatWidget() {
 
   const S = {
     wrap: {
-      border: '1px solid rgba(201,168,76,0.28)',
-      background: 'rgba(5,5,5,0.9)',
+      border: '1px solid rgba(212,136,42,0.3)',
+      background: 'rgba(8,15,23,0.92)',
       backdropFilter: 'blur(12px)',
       maxWidth: 370,
     },
     header: {
       padding: '12px 16px',
-      borderBottom: '1px solid rgba(201,168,76,0.15)',
+      borderBottom: '1px solid rgba(212,136,42,0.15)',
       display: 'flex',
       alignItems: 'center',
       gap: 10,
-      background: 'rgba(201,168,76,0.04)',
+      background: 'rgba(30,58,95,0.4)',
     },
     avatar: {
       width: 36,
       height: 36,
       borderRadius: '50%',
-      background: 'linear-gradient(135deg, rgba(201,168,76,0.2), rgba(201,168,76,0.08))',
-      border: '1px solid rgba(201,168,76,0.45)',
+      background: 'linear-gradient(135deg, rgba(212,136,42,0.25), rgba(212,136,42,0.1))',
+      border: '1px solid rgba(212,136,42,0.5)',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
@@ -82,7 +82,7 @@ export default function DanChatWidget() {
       height: 8,
       background: '#22c55e',
       borderRadius: '50%',
-      border: '1.5px solid #050505',
+      border: '1.5px solid #080F17',
     },
     body: {
       padding: '14px 14px 10px',
@@ -93,8 +93,8 @@ export default function DanChatWidget() {
       gap: 10,
     },
     danBubble: {
-      background: 'rgba(201,168,76,0.08)',
-      border: '1px solid rgba(201,168,76,0.15)',
+      background: 'rgba(30,58,95,0.6)',
+      border: '1px solid rgba(212,136,42,0.18)',
       padding: '10px 14px',
       fontSize: 13,
       color: 'var(--platinum)',
@@ -103,8 +103,8 @@ export default function DanChatWidget() {
       alignSelf: 'flex-start',
     },
     userBubble: {
-      background: 'rgba(255,255,255,0.06)',
-      border: '1px solid rgba(255,255,255,0.1)',
+      background: 'rgba(212,136,42,0.12)',
+      border: '1px solid rgba(212,136,42,0.2)',
       padding: '10px 14px',
       fontSize: 13,
       color: 'var(--white)',
@@ -121,15 +121,15 @@ export default function DanChatWidget() {
       animation: 'blink-cursor 1s infinite',
     },
     footer: {
-      borderTop: '1px solid rgba(201,168,76,0.12)',
+      borderTop: '1px solid rgba(212,136,42,0.12)',
       padding: '10px 12px',
       display: 'flex',
       gap: 8,
     },
     input: {
       flex: 1,
-      background: 'rgba(255,255,255,0.04)',
-      border: '1px solid rgba(201,168,76,0.18)',
+      background: 'rgba(30,58,95,0.3)',
+      border: '1px solid rgba(212,136,42,0.2)',
       color: 'var(--platinum)',
       fontFamily: 'var(--font-body)',
       fontSize: 13,
@@ -138,9 +138,9 @@ export default function DanChatWidget() {
     },
     sendBtn: {
       padding: '9px 16px',
-      background: 'linear-gradient(135deg, var(--gold), #E8C97A)',
+      background: 'linear-gradient(135deg, var(--gold), #E8A855)',
       border: 'none',
-      color: '#050505',
+      color: '#080F17',
       fontFamily: 'var(--font-display)',
       fontSize: 9,
       fontWeight: 700,
@@ -162,7 +162,7 @@ export default function DanChatWidget() {
           <div style={{ fontFamily: 'var(--font-display)', fontSize: 11, fontWeight: 700, color: 'var(--white)', letterSpacing: '0.08em' }}>
             Dan Carter
           </div>
-          <div style={{ fontSize: 10, color: 'rgba(201,168,76,0.7)', marginTop: 1 }}>
+          <div style={{ fontSize: 10, color: 'rgba(212,136,42,0.8)', marginTop: 1 }}>
             Director of Client Solutions
           </div>
         </div>
@@ -182,10 +182,7 @@ export default function DanChatWidget() {
         {typing && (
           <div style={{ ...S.danBubble, display: 'flex', gap: 5, alignItems: 'center', padding: '12px 16px' }}>
             {[0, 0.3, 0.6].map((d, i) => (
-              <div
-                key={i}
-                style={{ ...S.typingDot, animationDelay: `${d}s`, opacity: 0.6 }}
-              />
+              <div key={i} style={{ ...S.typingDot, animationDelay: `${d}s`, opacity: 0.6 }} />
             ))}
           </div>
         )}
@@ -200,8 +197,8 @@ export default function DanChatWidget() {
           onChange={e => setInput(e.target.value)}
           onKeyDown={onKey}
           placeholder="Ask Dan anything..."
-          onFocus={e => (e.target.style.borderColor = 'rgba(201,168,76,0.45)')}
-          onBlur={e => (e.target.style.borderColor = 'rgba(201,168,76,0.18)')}
+          onFocus={e => (e.target.style.borderColor = 'rgba(212,136,42,0.5)')}
+          onBlur={e => (e.target.style.borderColor = 'rgba(212,136,42,0.2)')}
         />
         <button style={S.sendBtn} onClick={send}>Send</button>
       </div>

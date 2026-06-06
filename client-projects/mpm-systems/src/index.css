@@ -1,18 +1,18 @@
 @import "tailwindcss";
 
 :root {
-  --gold: #C9A84C;
-  --gold-light: #E8C97A;
-  --gold-dim: rgba(201,168,76,0.10);
-  --gold-glow: rgba(201,168,76,0.22);
-  --black: #0a0a0a;
-  --black-rich: #050505;
-  --black-mid: #0d0d0d;
-  --black-card: #0f0f0f;
+  --gold: #D4882A;
+  --gold-light: #E8A855;
+  --gold-dim: rgba(212,136,42,0.10);
+  --gold-glow: rgba(212,136,42,0.22);
+  --black: #0D1B2A;
+  --black-rich: #080F17;
+  --black-mid: #111D2C;
+  --black-card: #1E3A5F;
   --white: #FFFFFF;
-  --platinum: #E8E4DD;
-  --muted: rgba(232,228,221,0.52);
-  --border: rgba(201,168,76,0.18);
+  --platinum: #A8B2C1;
+  --muted: rgba(168,178,193,0.52);
+  --border: rgba(212,136,42,0.18);
   --font-display: 'Cinzel', serif;
   --font-serif: 'Playfair Display', serif;
   --font-body: 'Inter', sans-serif;
@@ -98,7 +98,7 @@ body {
   font-family: var(--font-display);
   font-size: 9px;
   letter-spacing: 0.4em;
-  color: rgba(201,168,76,0.22);
+  color: rgba(212,136,42,0.22);
 }
 
 /* ── Buttons ──────────────────────────────────── */
@@ -108,9 +108,9 @@ body {
   justify-content: center;
   gap: 8px;
   padding: 14px 36px;
-  background: linear-gradient(135deg, #C9A84C 0%, #E8C97A 50%, #C9A84C 100%);
+  background: linear-gradient(135deg, #D4882A 0%, #E8A855 50%, #D4882A 100%);
   background-size: 200%;
-  color: #050505;
+  color: #080F17;
   font-family: var(--font-display);
   font-size: 11px;
   font-weight: 700;
@@ -124,14 +124,14 @@ body {
 .btn-gold:hover {
   background-position: right center;
   transform: translateY(-2px);
-  box-shadow: 0 8px 32px rgba(201,168,76,0.3);
+  box-shadow: 0 8px 32px rgba(212,136,42,0.35);
 }
 .btn-outline {
   display: inline-flex;
   align-items: center;
   gap: 8px;
   padding: 13px 36px;
-  border: 1px solid rgba(201,168,76,0.45);
+  border: 1px solid rgba(212,136,42,0.45);
   color: var(--gold);
   font-family: var(--font-display);
   font-size: 11px;
@@ -143,9 +143,9 @@ body {
   transition: background 0.25s, transform 0.2s, box-shadow 0.25s;
 }
 .btn-outline:hover {
-  background: rgba(201,168,76,0.07);
+  background: rgba(212,136,42,0.08);
   transform: translateY(-2px);
-  box-shadow: 0 4px 20px rgba(201,168,76,0.12);
+  box-shadow: 0 4px 20px rgba(212,136,42,0.15);
 }
 
 /* ── Service card hover ───────────────────────── */
@@ -153,10 +153,10 @@ body {
   transition: border-color 0.3s, background 0.3s, transform 0.3s, box-shadow 0.3s;
 }
 .service-card:hover {
-  border-color: rgba(201,168,76,0.38) !important;
-  background: linear-gradient(135deg, rgba(201,168,76,0.06), rgba(201,168,76,0.02)) !important;
+  border-color: rgba(212,136,42,0.45) !important;
+  background: linear-gradient(135deg, rgba(212,136,42,0.07), rgba(212,136,42,0.02)) !important;
   transform: translateY(-5px);
-  box-shadow: 0 20px 60px rgba(201,168,76,0.09);
+  box-shadow: 0 20px 60px rgba(212,136,42,0.1);
 }
 
 /* ── Pricing card hover ───────────────────────── */
@@ -165,10 +165,10 @@ body {
 }
 .pricing-card:hover {
   transform: translateY(-6px);
-  box-shadow: 0 28px 80px rgba(201,168,76,0.14);
+  box-shadow: 0 28px 80px rgba(212,136,42,0.18);
 }
 .pricing-card.featured:hover {
-  box-shadow: 0 28px 80px rgba(201,168,76,0.25);
+  box-shadow: 0 28px 80px rgba(212,136,42,0.28);
 }
 
 /* ── Scrollbar ────────────────────────────────── */

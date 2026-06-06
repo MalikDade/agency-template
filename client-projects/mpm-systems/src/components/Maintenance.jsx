@@ -55,7 +55,7 @@ export default function Maintenance() {
             Keep your system{' '}
             <em style={{ color: 'var(--gold)', fontStyle: 'italic' }}>running at full power.</em>
           </h2>
-          <p style={{ fontSize: 15, color: 'rgba(232,228,221,0.5)', maxWidth: 440, margin: '0 auto', lineHeight: 1.7 }}>
+          <p style={{ fontSize: 15, color: 'rgba(168,178,193,0.5)', maxWidth: 440, margin: '0 auto', lineHeight: 1.7 }}>
             After launch, your system needs fuel. Monthly plans keep your AI sharp, your site fast, and your business growing.
           </p>
         </div>
@@ -70,8 +70,8 @@ export default function Maintenance() {
               className="pricing-card reveal"
               style={{
                 padding: '40px 36px',
-                border: plan.highlight ? '1px solid rgba(201,168,76,0.4)' : '1px solid rgba(201,168,76,0.1)',
-                background: plan.highlight ? 'rgba(201,168,76,0.04)' : 'var(--black-card)',
+                border: plan.highlight ? '1px solid rgba(212,136,42,0.4)' : '1px solid rgba(212,136,42,0.1)',
+                background: plan.highlight ? 'rgba(212,136,42,0.04)' : 'var(--black-card)',
                 position: 'relative',
                 transitionDelay: `${i * 0.1}s`,
               }}
@@ -86,16 +86,16 @@ export default function Maintenance() {
 
               <div style={{ display: 'flex', alignItems: 'baseline', gap: 4, marginBottom: 16 }}>
                 <span style={{ fontFamily: 'var(--font-display)', fontSize: 40, fontWeight: 900, color: 'var(--white)' }}>{plan.price}</span>
-                <span style={{ fontFamily: 'var(--font-display)', fontSize: 10, letterSpacing: '0.2em', color: 'rgba(232,228,221,0.4)' }}>{plan.period}</span>
+                <span style={{ fontFamily: 'var(--font-display)', fontSize: 10, letterSpacing: '0.2em', color: 'rgba(168,178,193,0.4)' }}>{plan.period}</span>
               </div>
 
-              <p style={{ fontSize: 13, color: 'rgba(232,228,221,0.55)', lineHeight: 1.65, marginBottom: 28, minHeight: 52 }}>{plan.desc}</p>
+              <p style={{ fontSize: 13, color: 'rgba(168,178,193,0.55)', lineHeight: 1.65, marginBottom: 28, minHeight: 52 }}>{plan.desc}</p>
 
-              <div style={{ height: 1, background: 'rgba(201,168,76,0.1)', marginBottom: 24 }} />
+              <div style={{ height: 1, background: 'rgba(212,136,42,0.1)', marginBottom: 24 }} />
 
               <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 32 }}>
                 {plan.items.map(item => (
-                  <li key={item} style={{ display: 'flex', gap: 10, alignItems: 'flex-start', fontSize: 13, color: 'rgba(232,228,221,0.68)', lineHeight: 1.5 }}>
+                  <li key={item} style={{ display: 'flex', gap: 10, alignItems: 'flex-start', fontSize: 13, color: 'rgba(168,178,193,0.68)', lineHeight: 1.5 }}>
                     <span style={{ color: 'var(--gold)', fontSize: 10, marginTop: 3, flexShrink: 0 }}>✦</span>
                     {item}
                   </li>
@@ -109,7 +109,7 @@ export default function Maintenance() {
           ))}
         </div>
 
-        <p className="reveal" style={{ textAlign: 'center', marginTop: 32, fontSize: 13, color: 'rgba(232,228,221,0.3)', fontStyle: 'italic', fontFamily: 'var(--font-serif)' }}>
+        <p className="reveal" style={{ textAlign: 'center', marginTop: 32, fontSize: 13, color: 'rgba(168,178,193,0.3)', fontStyle: 'italic', fontFamily: 'var(--font-serif)' }}>
           Maintenance plans begin 30 days after project launch. Cancel anytime with 30 days notice.
         </p>
       </div>

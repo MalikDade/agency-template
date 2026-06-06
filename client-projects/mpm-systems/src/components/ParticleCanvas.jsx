@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 
-const GOLD = '201,168,76'
+const GOLD = '212,136,42'
 
 export default function ParticleCanvas() {
   const ref = useRef(null)
