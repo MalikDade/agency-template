@@ -24,7 +24,7 @@ export default function Navbar() {
     >
       <div className="max-w-6xl mx-auto px-6 flex items-center justify-between">
         <a href="#" className="text-2xl font-bold text-indigo-600 tracking-tight">
-          YourBrand
+          Making Power Moves
         </a>
 
         {/* Desktop nav */}

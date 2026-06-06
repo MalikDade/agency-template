@@ -15,14 +15,13 @@ export default function Hero() {
         </span>
 
         <h1 className="text-5xl md:text-7xl font-extrabold text-white leading-tight tracking-tight mb-6">
-          Grow Your Business
+          We Build
           <br />
-          <span className="text-indigo-300">Online.</span>
+          <span className="text-indigo-300">AI-Powered Business Systems</span>
         </h1>
 
         <p className="text-lg md:text-xl text-indigo-200 max-w-2xl mx-auto mb-10 leading-relaxed">
-          We design fast, beautiful websites that turn visitors into customers.
-          Let's build something great together.
+          From websites to full automation — we build the complete digital system your business needs to grow.
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
