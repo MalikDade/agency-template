@@ -1,47 +1,63 @@
 import { useState, useRef, useEffect } from 'react'
 
-const RESPONSES = {
-  price: "Our builds start at $2,500 for the Foundation package and go up to $10,000+ for The Full Empire. Most small businesses land in the $5k Business tier — it's the one that truly transforms operations. What kind of business are you running?",
-  timeline: "Most builds ship in 2–4 weeks. We move fast because you work directly with me — no account managers, no back-and-forth delays. I stay in it with you from discovery call to launch.",
-  services: "We build full-stack AI systems: a voice agent that answers your phone 24/7, a booking system, client portal, admin dashboard, AI chat assistant, payment integration, and more. Everything custom — nothing generic.",
-  contact: "Let's jump on a quick 20-minute discovery call. No pitch, just clarity on what your business needs. Hit 'Book a Call' below or scroll to the contact section.",
-  default: "That's a great question — best answered on a quick call where I can understand your business properly. Discovery calls are free, 20 minutes, and always worth it. Want to book one?",
-}
-
-const getResponse = (msg) => {
-  const m = msg.toLowerCase()
-  if (/price|cost|how much|pricing|\$|investment|package/.test(m)) return RESPONSES.price
-  if (/how long|timeline|fast|quick|week|deliver/.test(m)) return RESPONSES.timeline
-  if (/build|make|create|do|service|offer|include|what/.test(m)) return RESPONSES.services
-  if (/contact|call|book|meet|schedule|talk/.test(m)) return RESPONSES.contact
-  return RESPONSES.default
-}
+// Initial greeting is UI-only — not sent to the API as an assistant turn
+const GREETING = "Hi, I'm Dan — what kind of business do you run? I'd love to learn more about what you're working on."
 
 export default function DanChatWidget() {
-  const [messages, setMessages] = useState([
-    { from: 'dan', text: "Hi, I'm Dan — Chat with me 24/7. Ask me anything about MPM Systems or what we can build for your business." }
+  // apiHistory tracks only what's been sent/received by the API
+  const [apiHistory, setApiHistory] = useState([])
+  // uiMessages is what's displayed (includes the greeting)
+  const [uiMessages, setUiMessages] = useState([
+    { from: 'dan', text: GREETING },
   ])
   const [input, setInput] = useState('')
-  const [typing, setTyping] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
   const bottomRef = useRef(null)
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }, [messages, typing])
+  }, [uiMessages, loading])
 
-  const send = () => {
+  const send = async () => {
     const text = input.trim()
-    if (!text) return
+    if (!text || loading) return
     setInput('')
-    setMessages(m => [...m, { from: 'user', text }])
-    setTyping(true)
-    setTimeout(() => {
-      setMessages(m => [...m, { from: 'dan', text: getResponse(text) }])
-      setTyping(false)
-    }, 900 + Math.random() * 600)
+    setError(null)
+
+    const userMsg = { from: 'user', text }
+    setUiMessages(prev => [...prev, userMsg])
+
+    const newHistory = [...apiHistory, { role: 'user', content: text }]
+    setApiHistory(newHistory)
+    setLoading(true)
+
+    try {
+      const res = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: newHistory }),
+      })
+
+      const data = await res.json()
+
+      if (!res.ok || !data.reply) {
+        throw new Error(data.error || 'No reply')
+      }
+
+      setUiMessages(prev => [...prev, { from: 'dan', text: data.reply }])
+      setApiHistory(prev => [...prev, { role: 'assistant', content: data.reply }])
+    } catch (err) {
+      console.error('[DanChat]', err)
+      setError("Something went wrong — try again in a moment.")
+      // Roll back the user message from api history so retry works
+      setApiHistory(apiHistory)
+    } finally {
+      setLoading(false)
+    }
   }
 
-  const onKey = (e) => e.key === 'Enter' && !e.shiftKey && send()
+  const onKey = e => e.key === 'Enter' && !e.shiftKey && send()
 
   const S = {
     wrap: {
@@ -59,94 +75,61 @@ export default function DanChatWidget() {
       background: 'rgba(30,58,95,0.4)',
     },
     avatar: {
-      width: 36,
-      height: 36,
-      borderRadius: '50%',
+      width: 36, height: 36, borderRadius: '50%',
       background: 'linear-gradient(135deg, rgba(212,136,42,0.25), rgba(212,136,42,0.1))',
       border: '1px solid rgba(212,136,42,0.5)',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      fontSize: 11,
-      fontFamily: 'var(--font-display)',
-      color: 'var(--gold)',
-      fontWeight: 700,
-      flexShrink: 0,
-      position: 'relative',
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      fontSize: 11, fontFamily: 'var(--font-display)',
+      color: 'var(--gold)', fontWeight: 700, flexShrink: 0, position: 'relative',
     },
     onlineDot: {
-      position: 'absolute',
-      bottom: 1,
-      right: 1,
-      width: 8,
-      height: 8,
-      background: '#22c55e',
-      borderRadius: '50%',
-      border: '1.5px solid #080F17',
+      position: 'absolute', bottom: 1, right: 1,
+      width: 8, height: 8, background: '#22c55e',
+      borderRadius: '50%', border: '1.5px solid #080F17',
     },
     body: {
       padding: '14px 14px 10px',
-      maxHeight: 180,
+      maxHeight: 200,
       overflowY: 'auto',
-      display: 'flex',
-      flexDirection: 'column',
-      gap: 10,
+      display: 'flex', flexDirection: 'column', gap: 10,
     },
     danBubble: {
       background: 'rgba(30,58,95,0.6)',
       border: '1px solid rgba(212,136,42,0.18)',
-      padding: '10px 14px',
-      fontSize: 13,
-      color: 'var(--platinum)',
-      lineHeight: 1.6,
-      maxWidth: '88%',
-      alignSelf: 'flex-start',
+      padding: '10px 14px', fontSize: 13,
+      color: 'var(--platinum)', lineHeight: 1.6,
+      maxWidth: '88%', alignSelf: 'flex-start',
     },
     userBubble: {
       background: 'rgba(212,136,42,0.12)',
       border: '1px solid rgba(212,136,42,0.2)',
-      padding: '10px 14px',
-      fontSize: 13,
-      color: 'var(--white)',
-      lineHeight: 1.6,
-      maxWidth: '88%',
-      alignSelf: 'flex-end',
+      padding: '10px 14px', fontSize: 13,
+      color: 'var(--white)', lineHeight: 1.6,
+      maxWidth: '88%', alignSelf: 'flex-end',
     },
-    typingDot: {
-      display: 'inline-block',
-      width: 5,
-      height: 5,
-      borderRadius: '50%',
-      background: 'var(--gold)',
+    dot: {
+      display: 'inline-block', width: 5, height: 5,
+      borderRadius: '50%', background: 'var(--gold)',
       animation: 'blink-cursor 1s infinite',
     },
     footer: {
       borderTop: '1px solid rgba(212,136,42,0.12)',
-      padding: '10px 12px',
-      display: 'flex',
-      gap: 8,
+      padding: '10px 12px', display: 'flex', gap: 8,
     },
     input: {
       flex: 1,
       background: 'rgba(30,58,95,0.3)',
       border: '1px solid rgba(212,136,42,0.2)',
-      color: 'var(--platinum)',
-      fontFamily: 'var(--font-body)',
-      fontSize: 13,
-      padding: '9px 12px',
-      outline: 'none',
+      color: 'var(--platinum)', fontFamily: 'var(--font-body)',
+      fontSize: 13, padding: '9px 12px', outline: 'none',
     },
     sendBtn: {
       padding: '9px 16px',
-      background: 'linear-gradient(135deg, var(--gold), #E8A855)',
-      border: 'none',
-      color: '#080F17',
-      fontFamily: 'var(--font-display)',
-      fontSize: 9,
-      fontWeight: 700,
-      letterSpacing: '0.25em',
-      cursor: 'pointer',
-      whiteSpace: 'nowrap',
+      background: loading ? 'rgba(212,136,42,0.4)' : 'linear-gradient(135deg, var(--gold), #E8A855)',
+      border: 'none', color: '#080F17',
+      fontFamily: 'var(--font-display)', fontSize: 9,
+      fontWeight: 700, letterSpacing: '0.25em',
+      cursor: loading ? 'not-allowed' : 'pointer', whiteSpace: 'nowrap',
     },
   }
 
@@ -174,18 +157,28 @@ export default function DanChatWidget() {
 
       {/* Messages */}
       <div style={S.body}>
-        {messages.map((msg, i) => (
+        {uiMessages.map((msg, i) => (
           <div key={i} style={msg.from === 'dan' ? S.danBubble : S.userBubble}>
             {msg.text}
           </div>
         ))}
-        {typing && (
+
+        {/* Typing indicator */}
+        {loading && (
           <div style={{ ...S.danBubble, display: 'flex', gap: 5, alignItems: 'center', padding: '12px 16px' }}>
             {[0, 0.3, 0.6].map((d, i) => (
-              <div key={i} style={{ ...S.typingDot, animationDelay: `${d}s`, opacity: 0.6 }} />
+              <div key={i} style={{ ...S.dot, animationDelay: `${d}s`, opacity: 0.7 }} />
             ))}
           </div>
         )}
+
+        {/* Error */}
+        {error && !loading && (
+          <div style={{ fontSize: 11, color: 'rgba(212,136,42,0.6)', alignSelf: 'center', fontStyle: 'italic' }}>
+            {error}
+          </div>
+        )}
+
         <div ref={bottomRef} />
       </div>
 
@@ -196,11 +189,14 @@ export default function DanChatWidget() {
           value={input}
           onChange={e => setInput(e.target.value)}
           onKeyDown={onKey}
-          placeholder="Ask Dan anything..."
+          placeholder={loading ? 'Dan is typing...' : 'Ask Dan anything...'}
+          disabled={loading}
           onFocus={e => (e.target.style.borderColor = 'rgba(212,136,42,0.5)')}
           onBlur={e => (e.target.style.borderColor = 'rgba(212,136,42,0.2)')}
         />
-        <button style={S.sendBtn} onClick={send}>Send</button>
+        <button style={S.sendBtn} onClick={send} disabled={loading}>
+          {loading ? '...' : 'Send'}
+        </button>
       </div>
     </div>
   )
