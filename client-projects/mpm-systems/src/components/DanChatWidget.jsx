@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react'
 const GREETING = "Hi, I'm Dan — what kind of business do you run? I'd love to learn more about what you're working on."
 
 export default function DanChatWidget() {
+  const [sessionId] = useState(() => crypto.randomUUID())
   // apiHistory tracks only what's been sent/received by the API
   const [apiHistory, setApiHistory] = useState([])
   // uiMessages is what's displayed (includes the greeting)
@@ -36,7 +37,7 @@ export default function DanChatWidget() {
       const res = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: newHistory }),
+        body: JSON.stringify({ messages: newHistory, sessionId }),
       })
 
       const data = await res.json()

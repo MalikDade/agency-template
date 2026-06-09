@@ -1,30 +1,6 @@
-import { useState } from 'react'
-
-const BUDGETS = ['$2,500 – Foundation', '$5,000 – The System', '$10,000+ – The Full Empire', 'Not sure yet']
+import CalendlyEmbed from './CalendlyEmbed'
 
 export default function Contact() {
-  const [form, setForm] = useState({ name: '', email: '', phone: '', business: '', budget: '', message: '' })
-  const [sent, setSent] = useState(false)
-
-  const onChange = e => setForm(f => ({ ...f, [e.target.name]: e.target.value }))
-  const onSubmit = e => {
-    e.preventDefault()
-    setSent(true)
-    setForm({ name: '', email: '', phone: '', business: '', budget: '', message: '' })
-  }
-
-  const inputBase = {
-    width: '100%',
-    background: 'rgba(255,255,255,0.03)',
-    border: '1px solid rgba(212,136,42,0.16)',
-    color: 'var(--platinum)',
-    fontFamily: 'var(--font-body)',
-    fontSize: 14,
-    padding: '13px 16px',
-    outline: 'none',
-    transition: 'border-color 0.2s',
-    WebkitAppearance: 'none',
-  }
   const label = {
     fontFamily: 'var(--font-display)',
     fontSize: 9,
@@ -34,15 +10,12 @@ export default function Contact() {
     display: 'block',
     marginBottom: 8,
   }
-  const onFocus = e => (e.target.style.borderColor = 'rgba(212,136,42,0.45)')
-  const onBlur  = e => (e.target.style.borderColor = 'rgba(212,136,42,0.16)')
 
   return (
     <section id="contact" style={{ padding: '120px 40px', background: '#0A1220' }}>
       <div style={{ maxWidth: 1100, margin: '0 auto' }}>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 80 }} className="lg:grid-cols-2">
 
-          {/* Left: Info */}
           <div className="reveal-left">
             <p className="section-number" style={{ marginBottom: 12 }}>07</p>
             <p className="label" style={{ marginBottom: 24 }}>Book a Discovery Call</p>
@@ -53,17 +26,16 @@ export default function Contact() {
             </h2>
 
             <p style={{ fontSize: 16, color: 'rgba(168,178,193,0.58)', lineHeight: 1.78, marginBottom: 44 }}>
-              No templates. No upsells. Just a real conversation with Dan about what you're trying to build and whether MPM Systems is the right fit. Most calls are 20 minutes.
+              No templates. No upsells. Just a real conversation with Dan about what you're trying to build and whether MPM Systems is the right fit. Pick a time that works for you — most calls are 20 minutes.
             </p>
 
-            {/* What to expect */}
             <div style={{ marginBottom: 44 }}>
               <div style={{ fontFamily: 'var(--font-display)', fontSize: 9, letterSpacing: '0.4em', color: 'rgba(212,136,42,0.5)', marginBottom: 18, textTransform: 'uppercase' }}>
                 What Happens Next
               </div>
               {[
-                'You fill out the form — takes 2 minutes.',
-                'Dan reviews your business and reaches out within 24 hours.',
+                'Chat with Dan or pick a time on the calendar.',
+                'Choose an available date and time that fits your schedule.',
                 'We jump on a 20-minute discovery call.',
                 'You receive a custom scope and quote within 48 hours.',
               ].map((step, i) => (
@@ -76,7 +48,6 @@ export default function Contact() {
               ))}
             </div>
 
-            {/* Contact details */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
               {[
                 { lbl: 'Email', val: 'makingpowermovesllc@gmail.com', href: 'mailto:makingpowermovesllc@gmail.com' },
@@ -100,74 +71,16 @@ export default function Contact() {
             <div style={{ marginTop: 48, width: 80, height: 2, background: 'linear-gradient(90deg, var(--gold), transparent)' }} />
           </div>
 
-          {/* Right: Form */}
           <div className="reveal-right" style={{ transitionDelay: '0.15s' }}>
-            {sent ? (
-              <div style={{ border: '1px solid rgba(212,136,42,0.3)', padding: '64px 40px', textAlign: 'center', background: 'rgba(212,136,42,0.025)' }}>
-                <div style={{ fontSize: 40, marginBottom: 20, color: 'var(--gold)' }}>✦</div>
-                <div style={{ fontFamily: 'var(--font-serif)', fontSize: 26, fontWeight: 700, color: 'var(--white)', marginBottom: 14 }}>
-                  Request Received
-                </div>
-                <p style={{ fontSize: 15, color: 'rgba(168,178,193,0.55)', lineHeight: 1.65, maxWidth: 320, margin: '0 auto' }}>
-                  Dan will review your submission and reach out within 24 hours. Power moves incoming.
-                </p>
+            <div style={{ marginBottom: 16 }}>
+              <div style={{ fontFamily: 'var(--font-display)', fontSize: 9, letterSpacing: '0.35em', color: 'rgba(212,136,42,0.55)', textTransform: 'uppercase' }}>
+                Select Your Time
               </div>
-            ) : (
-              <form onSubmit={onSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 22 }}>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
-                  <div>
-                    <label style={label}>Your Name</label>
-                    <input name="name" value={form.name} onChange={onChange} required placeholder="Full name" style={inputBase} onFocus={onFocus} onBlur={onBlur} />
-                  </div>
-                  <div>
-                    <label style={label}>Email</label>
-                    <input name="email" type="email" value={form.email} onChange={onChange} required placeholder="you@email.com" style={inputBase} onFocus={onFocus} onBlur={onBlur} />
-                  </div>
-                </div>
-
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
-                  <div>
-                    <label style={label}>Phone</label>
-                    <input name="phone" type="tel" value={form.phone} onChange={onChange} placeholder="(601) 000-0000" style={inputBase} onFocus={onFocus} onBlur={onBlur} />
-                  </div>
-                  <div>
-                    <label style={label}>Business Name</label>
-                    <input name="business" value={form.business} onChange={onChange} required placeholder="Your business" style={inputBase} onFocus={onFocus} onBlur={onBlur} />
-                  </div>
-                </div>
-
-                <div>
-                  <label style={label}>Investment Range</label>
-                  <select name="budget" value={form.budget} onChange={onChange} style={{ ...inputBase, cursor: 'pointer' }} onFocus={onFocus} onBlur={onBlur}>
-                    <option value="" style={{ background: '#0D1B2A' }}>Select a tier</option>
-                    {BUDGETS.map(b => <option key={b} value={b} style={{ background: '#0D1B2A' }}>{b}</option>)}
-                  </select>
-                </div>
-
-                <div>
-                  <label style={label}>Tell Us About Your Business</label>
-                  <textarea
-                    name="message"
-                    value={form.message}
-                    onChange={onChange}
-                    required
-                    rows={5}
-                    placeholder="What does your business do? What's the biggest bottleneck right now?"
-                    style={{ ...inputBase, resize: 'vertical', minHeight: 120 }}
-                    onFocus={onFocus}
-                    onBlur={onBlur}
-                  />
-                </div>
-
-                <button type="submit" className="btn-gold" style={{ width: '100%', padding: '16px', fontSize: 11 }}>
-                  Submit & Book a Discovery Call →
-                </button>
-
-                <p style={{ fontSize: 11, color: 'rgba(168,178,193,0.3)', textAlign: 'center', fontFamily: 'var(--font-display)', letterSpacing: '0.15em' }}>
-                  No spam. No pressure. Just a conversation.
-                </p>
-              </form>
-            )}
+            </div>
+            <CalendlyEmbed height={720} minWidth={280} />
+            <p style={{ fontSize: 11, color: 'rgba(168,178,193,0.3)', textAlign: 'center', fontFamily: 'var(--font-display)', letterSpacing: '0.15em', marginTop: 16 }}>
+              No spam. No pressure. Just a conversation.
+            </p>
           </div>
 
         </div>
