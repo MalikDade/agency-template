@@ -1,3 +1,14 @@
+import SlideshowBg from './SlideshowBg'
+import { Link } from 'react-router-dom'
+
+const IMAGES = [
+  'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=1400&q=80&fit=crop',
+  'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=1400&q=80&fit=crop',
+  'https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=1400&q=80&fit=crop',
+  'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=1400&q=80&fit=crop',
+  'https://images.unsplash.com/photo-1573164713988-8665fc963095?w=1400&q=80&fit=crop',
+]
+
 const REASONS = [
   {
     symbol: '⚡',
@@ -33,8 +44,9 @@ const REASONS = [
 
 export default function WhyMPM() {
   return (
-    <section id="why" style={{ padding: '120px 40px', background: 'var(--black)' }}>
-      <div style={{ maxWidth: 1160, margin: '0 auto' }}>
+    <section id="why" style={{ padding: '120px 40px', position: 'relative', overflow: 'hidden' }}>
+      <SlideshowBg images={IMAGES} />
+      <div style={{ maxWidth: 1160, margin: '0 auto', position: 'relative', zIndex: 1 }}>
 
         {/* Header */}
         <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 48, marginBottom: 80 }} className="lg:grid-cols-2">
@@ -93,9 +105,9 @@ export default function WhyMPM() {
             </div>
             <p style={{ fontSize: 15, color: 'rgba(168,178,193,0.55)' }}>20-minute discovery call. Free. No pitch.</p>
           </div>
-          <a href="#contact" className="btn-gold" style={{ fontSize: 11, whiteSpace: 'nowrap' }}>
+          <Link to="/book" className="btn-gold" style={{ fontSize: 11, whiteSpace: 'nowrap', textDecoration: 'none' }}>
             Book a Discovery Call →
-          </a>
+          </Link>
         </div>
 
       </div>

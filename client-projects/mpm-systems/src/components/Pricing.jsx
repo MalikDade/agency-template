@@ -1,3 +1,15 @@
+import { motion } from 'framer-motion'
+import { Link } from 'react-router-dom'
+import SlideshowBg from './SlideshowBg'
+
+const IMAGES = [
+  'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1400&q=80&fit=crop',
+  'https://images.unsplash.com/photo-1497366216548-37526070297c?w=1400&q=80&fit=crop',
+  'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1400&q=80&fit=crop',
+  'https://images.unsplash.com/photo-1560179707-f14e90ef3623?w=1400&q=80&fit=crop',
+  'https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=1400&q=80&fit=crop',
+]
+
 const PLANS = [
   {
     tier: 'Starter',
@@ -45,7 +57,7 @@ const PLANS = [
     period: 'custom quote',
     tagline: 'The complete ecosystem. Nothing held back.',
     featured: false,
-    cta: 'Let\'s Talk',
+    cta: "Let's Talk",
     items: [
       'Everything in The System',
       'Fully custom AI model & training pipeline',
@@ -61,11 +73,18 @@ const PLANS = [
 
 export default function Pricing() {
   return (
-    <section id="pricing" style={{ padding: '120px 40px', background: '#0A1220' }}>
-      <div style={{ maxWidth: 1160, margin: '0 auto' }}>
+    <section id="pricing" style={{ padding: '120px 40px', position: 'relative', overflow: 'hidden' }}>
+      <SlideshowBg images={IMAGES} overlay="rgba(8,15,23,0.91)" />
+      <div style={{ maxWidth: 1160, margin: '0 auto', position: 'relative', zIndex: 1 }}>
 
         {/* Header */}
-        <div style={{ textAlign: 'center', marginBottom: 72 }} className="reveal">
+        <motion.div
+          initial={{ opacity: 0, y: 28 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
+          style={{ textAlign: 'center', marginBottom: 72 }}
+        >
           <p className="section-number" style={{ marginBottom: 12 }}>03</p>
           <p className="label" style={{ marginBottom: 20 }}>Investment</p>
           <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: 'clamp(32px, 5vw, 54px)', fontWeight: 900, color: 'var(--white)', lineHeight: 1.1, marginBottom: 20 }}>
@@ -75,14 +94,25 @@ export default function Pricing() {
           <p style={{ fontSize: 16, color: 'rgba(168,178,193,0.5)', maxWidth: 480, margin: '0 auto', lineHeight: 1.75 }}>
             Every build is a one-time investment. You own everything. No subscriptions, no platform fees, no lock-in.
           </p>
-        </div>
+        </motion.div>
 
         {/* Cards */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 2, alignItems: 'start' }}>
           {PLANS.map((plan, i) => (
-            <div
+            <motion.div
               key={plan.tier}
-              className={`pricing-card reveal ${plan.featured ? 'featured' : ''}`}
+              initial={{ opacity: 0, y: 36 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
+              whileHover={{
+                y: plan.featured ? -6 : -4,
+                boxShadow: plan.featured
+                  ? '0 24px 64px rgba(212,136,42,0.22), 0 0 48px rgba(212,136,42,0.12)'
+                  : '0 16px 48px rgba(0,0,0,0.5)',
+                transition: { duration: 0.25 },
+              }}
+              className={`pricing-card ${plan.featured ? 'featured' : ''}`}
               style={{
                 border: plan.featured ? '1px solid rgba(212,136,42,0.55)' : '1px solid rgba(212,136,42,0.12)',
                 background: plan.featured
@@ -90,7 +120,6 @@ export default function Pricing() {
                   : 'var(--black-card)',
                 position: 'relative',
                 overflow: 'hidden',
-                transitionDelay: `${i * 0.1}s`,
               }}
             >
               {/* Featured glow */}
@@ -106,7 +135,6 @@ export default function Pricing() {
               )}
 
               <div style={{ padding: plan.featured ? '52px 40px 40px' : '40px 40px' }}>
-                {/* Tier */}
                 <div style={{ marginBottom: 4 }}>
                   <span className="label" style={{ fontSize: 9 }}>{plan.tier}</span>
                 </div>
@@ -114,7 +142,6 @@ export default function Pricing() {
                   {plan.subtitle}
                 </div>
 
-                {/* Price */}
                 <div style={{ display: 'flex', alignItems: 'baseline', gap: 8, marginBottom: 8 }}>
                   <span style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(36px, 4vw, 48px)', fontWeight: 900, color: 'var(--white)', letterSpacing: '-0.02em' }}>
                     {plan.price}
@@ -126,10 +153,8 @@ export default function Pricing() {
 
                 <p style={{ fontSize: 14, color: 'rgba(168,178,193,0.6)', lineHeight: 1.65, marginBottom: 28 }}>{plan.tagline}</p>
 
-                {/* Rule */}
                 <div style={{ height: 1, background: plan.featured ? 'rgba(212,136,42,0.25)' : 'rgba(255,255,255,0.06)', marginBottom: 28 }} />
 
-                {/* Features */}
                 <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 36 }}>
                   {plan.items.map(item => (
                     <li key={item} style={{ display: 'flex', gap: 12, alignItems: 'flex-start', fontSize: 14, color: 'rgba(168,178,193,0.72)', lineHeight: 1.5 }}>
@@ -139,12 +164,15 @@ export default function Pricing() {
                   ))}
                 </ul>
 
-                {/* CTA */}
-                <a href="#contact" className={plan.featured ? 'btn-gold' : 'btn-outline'} style={{ width: '100%', display: 'block', textAlign: 'center', padding: '15px' }}>
+                <Link
+                  to="/book"
+                  className={plan.featured ? 'btn-gold' : 'btn-outline'}
+                  style={{ width: '100%', display: 'block', textAlign: 'center', padding: '15px', textDecoration: 'none' }}
+                >
                   {plan.cta} →
-                </a>
+                </Link>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
 

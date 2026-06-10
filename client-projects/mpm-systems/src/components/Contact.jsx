@@ -1,31 +1,26 @@
-import { useState } from 'react'
+import { useEffect } from 'react'
+import SlideshowBg from './SlideshowBg'
 
-const BUDGETS = ['$2,500 – Foundation', '$5,000 – The System', '$10,000+ – The Full Empire', 'Not sure yet']
+const CALENDLY_URL = 'https://calendly.com/malikdade20?background_color=0d1b2a&text_color=ffffff&primary_color=d4882a&hide_gdpr_banner=1'
+
+const IMAGES = [
+  'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=1400&q=80&fit=crop',
+  'https://images.unsplash.com/photo-1542626991-cbc4e32524cc?w=1400&q=80&fit=crop',
+  'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1400&q=80&fit=crop',
+  'https://images.unsplash.com/photo-1573166364524-d9dbfd8bbf83?w=1400&q=80&fit=crop',
+  'https://images.unsplash.com/photo-1600880292089-90a7e086ee0c?w=1400&q=80&fit=crop',
+]
 
 export default function Contact() {
-  const [form, setForm] = useState({ name: '', email: '', phone: '', business: '', budget: '', message: '' })
-  const [sent, setSent] = useState(false)
+  useEffect(() => {
+    if (document.querySelector('script[src*="calendly"]')) return
+    const script = document.createElement('script')
+    script.src = 'https://assets.calendly.com/assets/external/widget.js'
+    script.async = true
+    document.head.appendChild(script)
+  }, [])
 
-  const onChange = e => setForm(f => ({ ...f, [e.target.name]: e.target.value }))
-  const onSubmit = e => {
-    e.preventDefault()
-    setSent(true)
-    setForm({ name: '', email: '', phone: '', business: '', budget: '', message: '' })
-  }
-
-  const inputBase = {
-    width: '100%',
-    background: 'rgba(255,255,255,0.03)',
-    border: '1px solid rgba(212,136,42,0.16)',
-    color: 'var(--platinum)',
-    fontFamily: 'var(--font-body)',
-    fontSize: 14,
-    padding: '13px 16px',
-    outline: 'none',
-    transition: 'border-color 0.2s',
-    WebkitAppearance: 'none',
-  }
-  const label = {
+  const labelStyle = {
     fontFamily: 'var(--font-display)',
     fontSize: 9,
     letterSpacing: '0.42em',
@@ -34,12 +29,11 @@ export default function Contact() {
     display: 'block',
     marginBottom: 8,
   }
-  const onFocus = e => (e.target.style.borderColor = 'rgba(212,136,42,0.45)')
-  const onBlur  = e => (e.target.style.borderColor = 'rgba(212,136,42,0.16)')
 
   return (
-    <section id="contact" style={{ padding: '120px 40px', background: '#0A1220' }}>
-      <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+    <section id="contact" style={{ padding: '120px 40px', position: 'relative', overflow: 'hidden' }}>
+      <SlideshowBg images={IMAGES} overlay="rgba(8,15,23,0.90)" />
+      <div style={{ maxWidth: 1100, margin: '0 auto', position: 'relative', zIndex: 1 }}>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 80 }} className="lg:grid-cols-2">
 
           {/* Left: Info */}
@@ -62,10 +56,10 @@ export default function Contact() {
                 What Happens Next
               </div>
               {[
-                'You fill out the form — takes 2 minutes.',
-                'Dan reviews your business and reaches out within 24 hours.',
-                'We jump on a 20-minute discovery call.',
-                'You receive a custom scope and quote within 48 hours.',
+                'Pick a time that works for you — takes 30 seconds.',
+                'Get an instant confirmation email with call details.',
+                'Show up and talk to Dan — no prep needed.',
+                'Receive a custom scope and quote within 48 hours.',
               ].map((step, i) => (
                 <div key={i} style={{ display: 'flex', gap: 14, alignItems: 'flex-start', marginBottom: 14 }}>
                   <div style={{ width: 22, height: 22, border: '1px solid rgba(212,136,42,0.3)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
@@ -80,10 +74,10 @@ export default function Contact() {
             <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
               {[
                 { lbl: 'Email', val: 'makingpowermovesllc@gmail.com', href: 'mailto:makingpowermovesllc@gmail.com' },
-                { lbl: 'Response time', val: 'Within 24 hours', href: null },
+                { lbl: 'Response Time', val: 'Within 24 hours', href: null },
               ].map(c => (
                 <div key={c.lbl}>
-                  <span style={label}>{c.lbl}</span>
+                  <span style={labelStyle}>{c.lbl}</span>
                   {c.href ? (
                     <a href={c.href} style={{ fontSize: 14, color: 'var(--platinum)', textDecoration: 'none', transition: 'color 0.2s' }}
                       onMouseEnter={e => (e.target.style.color = 'var(--gold)')}
@@ -100,74 +94,32 @@ export default function Contact() {
             <div style={{ marginTop: 48, width: 80, height: 2, background: 'linear-gradient(90deg, var(--gold), transparent)' }} />
           </div>
 
-          {/* Right: Form */}
+          {/* Right: Calendly Embed */}
           <div className="reveal-right" style={{ transitionDelay: '0.15s' }}>
-            {sent ? (
-              <div style={{ border: '1px solid rgba(212,136,42,0.3)', padding: '64px 40px', textAlign: 'center', background: 'rgba(212,136,42,0.025)' }}>
-                <div style={{ fontSize: 40, marginBottom: 20, color: 'var(--gold)' }}>✦</div>
-                <div style={{ fontFamily: 'var(--font-serif)', fontSize: 26, fontWeight: 700, color: 'var(--white)', marginBottom: 14 }}>
-                  Request Received
-                </div>
-                <p style={{ fontSize: 15, color: 'rgba(168,178,193,0.55)', lineHeight: 1.65, maxWidth: 320, margin: '0 auto' }}>
-                  Dan will review your submission and reach out within 24 hours. Power moves incoming.
-                </p>
-              </div>
-            ) : (
-              <form onSubmit={onSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 22 }}>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
-                  <div>
-                    <label style={label}>Your Name</label>
-                    <input name="name" value={form.name} onChange={onChange} required placeholder="Full name" style={inputBase} onFocus={onFocus} onBlur={onBlur} />
-                  </div>
-                  <div>
-                    <label style={label}>Email</label>
-                    <input name="email" type="email" value={form.email} onChange={onChange} required placeholder="you@email.com" style={inputBase} onFocus={onFocus} onBlur={onBlur} />
-                  </div>
-                </div>
+            <div style={{
+              border: '1px solid rgba(212,136,42,0.22)',
+              background: 'rgba(8,15,23,0.7)',
+              overflow: 'hidden',
+              position: 'relative',
+            }}>
+              {/* Top gold accent bar */}
+              <div style={{ height: 2, background: 'linear-gradient(90deg, var(--gold), rgba(212,136,42,0.3), transparent)' }} />
 
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
-                  <div>
-                    <label style={label}>Phone</label>
-                    <input name="phone" type="tel" value={form.phone} onChange={onChange} placeholder="(601) 000-0000" style={inputBase} onFocus={onFocus} onBlur={onBlur} />
-                  </div>
-                  <div>
-                    <label style={label}>Business Name</label>
-                    <input name="business" value={form.business} onChange={onChange} required placeholder="Your business" style={inputBase} onFocus={onFocus} onBlur={onBlur} />
-                  </div>
-                </div>
+              {/* Corner accent — top right */}
+              <div style={{ position: 'absolute', top: 2, right: 0, width: 64, height: 1, background: 'linear-gradient(270deg, rgba(212,136,42,0.25), transparent)', pointerEvents: 'none' }} />
+              {/* Corner accent — bottom left */}
+              <div style={{ position: 'absolute', bottom: 0, left: 0, width: 64, height: 1, background: 'linear-gradient(90deg, rgba(212,136,42,0.2), transparent)', pointerEvents: 'none' }} />
 
-                <div>
-                  <label style={label}>Investment Range</label>
-                  <select name="budget" value={form.budget} onChange={onChange} style={{ ...inputBase, cursor: 'pointer' }} onFocus={onFocus} onBlur={onBlur}>
-                    <option value="" style={{ background: '#0D1B2A' }}>Select a tier</option>
-                    {BUDGETS.map(b => <option key={b} value={b} style={{ background: '#0D1B2A' }}>{b}</option>)}
-                  </select>
-                </div>
+              <div
+                className="calendly-inline-widget"
+                data-url={CALENDLY_URL}
+                style={{ minWidth: 280, height: 660 }}
+              />
+            </div>
 
-                <div>
-                  <label style={label}>Tell Us About Your Business</label>
-                  <textarea
-                    name="message"
-                    value={form.message}
-                    onChange={onChange}
-                    required
-                    rows={5}
-                    placeholder="What does your business do? What's the biggest bottleneck right now?"
-                    style={{ ...inputBase, resize: 'vertical', minHeight: 120 }}
-                    onFocus={onFocus}
-                    onBlur={onBlur}
-                  />
-                </div>
-
-                <button type="submit" className="btn-gold" style={{ width: '100%', padding: '16px', fontSize: 11 }}>
-                  Submit & Book a Discovery Call →
-                </button>
-
-                <p style={{ fontSize: 11, color: 'rgba(168,178,193,0.3)', textAlign: 'center', fontFamily: 'var(--font-display)', letterSpacing: '0.15em' }}>
-                  No spam. No pressure. Just a conversation.
-                </p>
-              </form>
-            )}
+            <p style={{ textAlign: 'center', marginTop: 16, fontSize: 10, color: 'rgba(168,178,193,0.25)', fontFamily: 'var(--font-display)', letterSpacing: '0.2em' }}>
+              NO SPAM. NO PRESSURE. JUST A CONVERSATION.
+            </p>
           </div>
 
         </div>

@@ -1,3 +1,13 @@
+import SlideshowBg from './SlideshowBg'
+
+const IMAGES = [
+  'https://images.unsplash.com/photo-1604654894610-df63bc536371?w=1400&q=80&fit=crop',
+  'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=1400&q=80&fit=crop',
+  'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=1400&q=80&fit=crop',
+  'https://images.unsplash.com/photo-1519014816548-bf5fe059798b?w=1400&q=80&fit=crop',
+  'https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?w=1400&q=80&fit=crop',
+]
+
 const BUILT = [
   { symbol: '◈', name: 'AI Voice Agent',    detail: 'Selena — answers calls, books appointments, handles FAQs in English & Spanish' },
   { symbol: '◉', name: 'Custom Website',    detail: '8-page luxury nail studio site with gallery, services, pricing, and booking' },
@@ -16,12 +26,10 @@ const RESULTS = [
 
 export default function CaseStudy() {
   return (
-    <section id="case-study" style={{ padding: '120px 40px', background: '#0A1220', position: 'relative', overflow: 'hidden' }}>
+    <section id="case-study" style={{ padding: '120px 40px', position: 'relative', overflow: 'hidden' }}>
+      <SlideshowBg images={IMAGES} overlay="rgba(8,15,23,0.92)" />
 
-      {/* Background accent */}
-      <div style={{ position: 'absolute', right: -200, top: '50%', transform: 'translateY(-50%)', width: 500, height: 500, background: 'radial-gradient(circle, rgba(212,136,42,0.04) 0%, transparent 70%)', pointerEvents: 'none' }} />
-
-      <div style={{ maxWidth: 1160, margin: '0 auto' }}>
+      <div style={{ maxWidth: 1160, margin: '0 auto', position: 'relative', zIndex: 1 }}>
 
         {/* Header */}
         <div style={{ marginBottom: 72 }} className="reveal">
@@ -137,6 +145,29 @@ export default function CaseStudy() {
           </div>
         </div>
 
+
+        {/* Elevated Journeys Case Study */}
+        <div className="reveal" style={{ marginTop: 80, padding: '48px', border: '1px solid rgba(212,136,42,0.12)', background: 'rgba(255,255,255,0.01)' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 48, alignItems: 'center' }}>
+            <div>
+              <div style={{ fontFamily: 'var(--font-display)', fontSize: 9, letterSpacing: '0.3em', color: 'rgba(212,136,42,0.6)', marginBottom: 12 }}>CASE STUDY 02 — TRAVEL AGENCY</div>
+              <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: 'clamp(28px, 3vw, 42px)', fontWeight: 700, color: 'var(--white)', marginBottom: 16 }}>Elevated Journeys</h3>
+              <p style={{ fontSize: 14, color: 'rgba(168,178,193,0.6)', lineHeight: 1.8, marginBottom: 24 }}>A luxury travel agency built from scratch with a cinematic website, AI travel concierge chat, custom itinerary request stem, and full lead capture pipeline.</p>
+              <a href="https://elevated-journeys.vercel.app" target="_blank" rel="noreferrer" style={{ display: 'inline-block', padding: '12px 28px', border: '1px solid rgba(212,136,42,0.3)', color: 'var(--gold)', fontFamily: 'var(--font-display)', fontSize: 9, letterSpacing: '0.2em', textTransform: 'uppercase', textDecoration: 'none' }}>View Live Site →</a>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+              {[{symbol:'✈',name:'Cinematic Website',detail:'Auto-rotating destination hero, particle effects, smooth scroll animations'},{symbol:'◐',name:'AI Travel Concierge',detail:'Chat widget powered by Claude — qualifies clients and captures leads 24/7'},{symbol:'⊕',name:'Trip Planning Form',detail:'Full consultation request system with budget, destination, and date capture'},{symbol:'◎',name:'Lead Pipeline',detail:'Every inquiry saved and emailed to the agency owner automatically'}].map(item => (
+    <div key={item.name} style={{ display: 'flex', gap: 16, alignItems: 'flex-start', padding: '16px 20px', border: '1px solid rgba(212,136,42,0.08)', background: 'rgba(255,255,255,0.02)' }}>
+                  <span style={{ color: 'var(--gold)', fontSize: 18, flexShrink: 0 }}>{item.symbol}</span>
+                  <div>
+                    <div style={{ fontFamily: 'var(--font-display)', fontSize: 11, fontWeight: 700, color: 'var(--white)', letterSpacing: '0.1em', marginBottom: 4 }}>{item.name}</div>
+                    <div style={{ fontSize: 12, color: 'rgba(168,178,193,0.5)', lineHeight: 1.55 }}>{item.detail}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
         {/* Pull quote */}
         <div className="reveal" style={{ marginTop: 56, textAlign: 'center' }}>
           <div style={{ display: 'inline-block', padding: '32px 48px', border: '1px solid rgba(212,136,42,0.15)', background: 'rgba(212,136,42,0.02)', maxWidth: 640 }}>

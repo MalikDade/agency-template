@@ -1,8 +1,8 @@
 const ACTIVE_COMPANY = {
-  tag: 'MPM Tech',
+  tag: 'MPM Systems',
   headline: 'AI-Powered Business Systems',
   description:
-    'MPM Tech builds intelligent automation systems for small businesses — from AI voice receptionists and 24/7 booking agents to full-stack digital infrastructure. We give growing businesses the operational leverage of an enterprise.',
+    'MPM Systems builds intelligent automation systems for small businesses — from AI voice receptionists and 24/7 booking agents to full-stack digital infrastructure. We give growing businesses the operational leverage of an enterprise.',
   features: [
     'AI Voice & Chat Assistants',
     'Automated Booking & CRM',
@@ -10,7 +10,7 @@ const ACTIVE_COMPANY = {
     'Business Intelligence Dashboards',
   ],
   status: 'Live',
-  href: '#',
+  href: 'https://mpmsystems.net',
 }
 
 const COMING_SOON = [
@@ -131,8 +131,8 @@ export default function Branches() {
                 {ACTIVE_COMPANY.description}
               </p>
 
-              <a href={ACTIVE_COMPANY.href} className="btn-gold" style={{ fontSize: 11 }}>
-                Visit MPM Tech →
+              <a href={ACTIVE_COMPANY.href} target="_blank" rel="noopener noreferrer" className="btn-gold" style={{ fontSize: 11 }}>
+                Visit MPM Systems →
               </a>
             </div>
 

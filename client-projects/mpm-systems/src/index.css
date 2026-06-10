@@ -19,7 +19,7 @@
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; scroll-padding-top: 80px; }
 body {
   background: var(--black-rich);
   color: var(--platinum);
@@ -57,6 +57,20 @@ body {
 @keyframes float-y {
   0%, 100% { transform: translateY(0); }
   50%       { transform: translateY(-6px); }
+}
+@keyframes gradient-drift {
+  0%, 100% { background-position: 0% 50%; }
+  50%       { background-position: 100% 50%; }
+}
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(212,136,42,0.15); }
+  50%       { box-shadow: 0 0 48px rgba(212,136,42,0.35); }
+}
+
+.gradient-animate {
+  background: linear-gradient(-45deg, #080F17, #0D1B2A, #091420, #0D1B2A);
+  background-size: 400% 400%;
+  animation: gradient-drift 18s ease infinite;
 }
 
 /* ── Reveal ────────────────────────────────────── */

@@ -1,21 +1,39 @@
 import { useState, useEffect } from 'react'
+import { NavLink, Link, useNavigate } from 'react-router-dom'
 
 const LINKS = [
-  { label: 'What We Build', href: '#build' },
-  { label: 'Pricing', href: '#pricing' },
-  { label: 'Case Study', href: '#case-study' },
-  { label: 'Why Us', href: '#why' },
+  { label: 'Home',        to: '/',           end: true },
+  { label: 'Services',    to: '/services' },
+  { label: 'Pricing',     to: '/pricing' },
+  { label: 'Case Study',  to: '/case-study' },
+  { label: 'Why Us',      to: '/why-us' },
 ]
 
-export default function Navbar() {
+const linkBase = {
+  fontFamily: 'var(--font-display)',
+  fontSize: 9,
+  letterSpacing: '0.3em',
+  textTransform: 'uppercase',
+  textDecoration: 'none',
+  transition: 'color 0.2s',
+  cursor: 'pointer',
+}
+
+export default function Navbar({ onStartTour }) {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
+  const navigate = useNavigate()
 
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 50)
     window.addEventListener('scroll', fn, { passive: true })
     return () => window.removeEventListener('scroll', fn)
   }, [])
+
+  const getNavStyle = ({ isActive }) => ({
+    ...linkBase,
+    color: isActive ? 'var(--gold)' : 'rgba(168,178,193,0.75)',
+  })
 
   return (
     <nav style={{
@@ -32,7 +50,7 @@ export default function Navbar() {
       transition: 'all 0.4s cubic-bezier(.22,1,.36,1)',
     }}>
       {/* Logo */}
-      <a href="#home" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 10 }}>
+      <Link to="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 10 }}>
         <div style={{
           width: 34, height: 34,
           border: '1px solid rgba(212,136,42,0.55)',
@@ -50,25 +68,44 @@ export default function Navbar() {
             BY MAKING POWER MOVES LLC
           </div>
         </div>
-      </a>
+      </Link>
 
       {/* Desktop nav */}
       <div className="hidden md:flex" style={{ alignItems: 'center', gap: 36 }}>
         {LINKS.map(l => (
-          <a key={l.href} href={l.href} style={{
-            fontFamily: 'var(--font-display)',
-            fontSize: 9,
-            letterSpacing: '0.3em',
-            textTransform: 'uppercase',
-            color: 'rgba(168,178,193,0.75)',
-            textDecoration: 'none',
-            transition: 'color 0.2s',
-          }}
-            onMouseEnter={e => (e.target.style.color = 'var(--gold)')}
-            onMouseLeave={e => (e.target.style.color = 'rgba(168,178,193,0.75)')}
-          >{l.label}</a>
+          <NavLink key={l.to} to={l.to} end={!!l.end} style={getNavStyle}
+            onMouseEnter={e => { if (!e.currentTarget.style.color.includes('212')) e.currentTarget.style.color = 'var(--gold)' }}
+            onMouseLeave={e => { const isActive = e.currentTarget.getAttribute('data-active') === 'true'; if (!isActive) e.currentTarget.style.color = 'rgba(168,178,193,0.75)' }}
+          >
+            {l.label}
+          </NavLink>
         ))}
-        <a href="#contact" className="btn-gold" style={{ padding: '10px 24px', fontSize: 10 }}>Book a Call</a>
+
+        {/* Dan tour trigger */}
+        {onStartTour && (
+          <button
+            onClick={onStartTour}
+            style={{
+              ...linkBase,
+              background: 'none',
+              border: 'none',
+              color: 'rgba(212,136,42,0.55)',
+              display: 'flex', alignItems: 'center', gap: 6,
+              fontSize: 8,
+            }}
+            onMouseEnter={e => (e.currentTarget.style.color = 'var(--gold)')}
+            onMouseLeave={e => (e.currentTarget.style.color = 'rgba(212,136,42,0.55)')}
+          >
+            <div style={{ width: 18, height: 18, borderRadius: '50%', overflow: 'hidden', border: '1px solid rgba(212,136,42,0.4)', flexShrink: 0 }}>
+              <img src="/dan-carter.png" alt="Dan" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top center' }} />
+            </div>
+            GUIDE ME
+          </button>
+        )}
+
+        <Link to="/book" className="btn-gold" style={{ padding: '10px 24px', fontSize: 10, textDecoration: 'none' }}>
+          Book a Call
+        </Link>
       </div>
 
       {/* Mobile hamburger */}
@@ -97,14 +134,24 @@ export default function Navbar() {
           display: 'flex', flexDirection: 'column', gap: 20,
         }}>
           {LINKS.map(l => (
-            <a key={l.href} href={l.href} onClick={() => setMenuOpen(false)}
-              style={{ fontFamily: 'var(--font-display)', fontSize: 11, letterSpacing: '0.3em', textTransform: 'uppercase', color: 'var(--platinum)', textDecoration: 'none' }}>
+            <NavLink key={l.to} to={l.to} onClick={() => setMenuOpen(false)}
+              style={({ isActive }) => ({
+                ...linkBase,
+                fontSize: 11,
+                color: isActive ? 'var(--gold)' : 'var(--platinum)',
+              })}
+            >
               {l.label}
-            </a>
+            </NavLink>
           ))}
-          <a href="#contact" className="btn-gold" style={{ textAlign: 'center', padding: '12px', fontSize: 10 }} onClick={() => setMenuOpen(false)}>
+          <Link
+            to="/book"
+            className="btn-gold"
+            style={{ textAlign: 'center', padding: '12px', fontSize: 10, textDecoration: 'none' }}
+            onClick={() => setMenuOpen(false)}
+          >
             Book a Call
-          </a>
+          </Link>
         </div>
       )}
     </nav>

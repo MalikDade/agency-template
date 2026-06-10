@@ -1,9 +1,22 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useMemo } from 'react'
 
 // Initial greeting is UI-only — not sent to the API as an assistant turn
 const GREETING = "Hi, I'm Dan — what kind of business do you run? I'd love to learn more about what you're working on."
 
+function genSessionId() {
+  return 'sess_' + Math.random().toString(36).slice(2) + Date.now().toString(36)
+}
+
 export default function DanChatWidget() {
+  const sessionId = useMemo(() => {
+    const key = 'mpm_chat_session'
+    const existing = sessionStorage.getItem(key)
+    if (existing) return existing
+    const id = genSessionId()
+    sessionStorage.setItem(key, id)
+    return id
+  }, [])
+
   // apiHistory tracks only what's been sent/received by the API
   const [apiHistory, setApiHistory] = useState([])
   // uiMessages is what's displayed (includes the greeting)
@@ -36,7 +49,7 @@ export default function DanChatWidget() {
       const res = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: newHistory }),
+        body: JSON.stringify({ messages: newHistory, sessionId }),
       })
 
       const data = await res.json()
@@ -76,11 +89,10 @@ export default function DanChatWidget() {
     },
     avatar: {
       width: 36, height: 36, borderRadius: '50%',
-      background: 'linear-gradient(135deg, rgba(212,136,42,0.25), rgba(212,136,42,0.1))',
       border: '1px solid rgba(212,136,42,0.5)',
-      display: 'flex', alignItems: 'center', justifyContent: 'center',
-      fontSize: 11, fontFamily: 'var(--font-display)',
-      color: 'var(--gold)', fontWeight: 700, flexShrink: 0, position: 'relative',
+      flexShrink: 0, position: 'relative',
+      overflow: 'hidden',
+      background: 'rgba(30,58,95,0.6)',
     },
     onlineDot: {
       position: 'absolute', bottom: 1, right: 1,
@@ -138,7 +150,11 @@ export default function DanChatWidget() {
       {/* Header */}
       <div style={S.header}>
         <div style={S.avatar}>
-          DC
+          <img
+            src="/dan-carter.png"
+            alt="Dan Carter"
+            style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top center' }}
+          />
           <div style={S.onlineDot} />
         </div>
         <div>

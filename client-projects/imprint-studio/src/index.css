@@ -1,0 +1,31 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&family=Playfair+Display:wght@700;900&display=swap');
+
+:root {
+  --white: #FFFFFF;
+  --off-white: #F8F8F6;
+  --canvas: #F2F0EB;
+  --black: #0A0A0A;
+  --black-mid: #1A1A1A;
+  --ink: #111111;
+  --electric: #00E5FF;
+  --splash-1: #FF006E;
+  --splash-2: #FFD600;
+  --splash-3: #00E5FF;
+  --splash-4: #FF4D00;
+  --splash-5: #7B2FFF;
+  --muted: rgba(10,10,10,0.5);
+  --font-impact: 'Bebas Neue', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+  --font-display: 'Playfair Display', serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { background: var(--white); color: var(--ink); font-family: var(--font-body); overflow-x: hidden; }
+
+.reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.8s ease, transform 0.8s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-left { opacity: 0; transform: translateX(-40px); transition: opacity 0.8s ease, transform 0.8s ease; }
+.reveal-left.visible { opacity: 1; transform: translateX(0); }
+.reveal-right { opacity: 0; transform: translateX(40px); transition: opacity 0.8s ease, transform 0.8s ease; }
+.reveal-right.visible { opacity: 1; transform: translateX(0); }

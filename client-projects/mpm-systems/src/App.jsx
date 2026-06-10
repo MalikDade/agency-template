@@ -1,41 +1,96 @@
-import { useEffect } from 'react'
+import { useState, useCallback } from 'react'
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
+import { AnimatePresence, motion } from 'framer-motion'
+
 import Navbar from './components/Navbar'
-import Hero from './components/Hero'
-import WhatWeBuild from './components/WhatWeBuild'
-import Pricing from './components/Pricing'
-import Maintenance from './components/Maintenance'
-import CaseStudy from './components/CaseStudy'
-import WhyMPM from './components/WhyMPM'
-import Contact from './components/Contact'
 import Footer from './components/Footer'
+import BackToTop from './components/BackToTop'
+import LoadingScreen from './components/LoadingScreen'
+import DanWelcome from './components/DanWelcome'
+import GuidedTour from './components/GuidedTour'
+import PageTransition from './components/PageTransition'
 
-export default function App() {
-  useEffect(() => {
-    const classes = ['reveal', 'reveal-left', 'reveal-right']
-    const selectors = classes.map(c => `.${c}`).join(',')
-    const els = document.querySelectorAll(selectors)
+import Home from './pages/Home'
+import Services from './pages/Services'
+import PricingPage from './pages/Pricing'
+import CaseStudyPage from './pages/CaseStudy'
+import WhyUsPage from './pages/WhyUs'
+import BookPage from './pages/Book'
+import Admin from './pages/Admin'
 
-    const observer = new IntersectionObserver(
-      (entries) => entries.forEach(e => e.isIntersecting && e.target.classList.add('visible')),
-      { threshold: 0.1 }
-    )
-    els.forEach(el => observer.observe(el))
-    return () => observer.disconnect()
+function AnimatedRoutes({ onStartTour }) {
+  const location = useLocation()
+  return (
+    <AnimatePresence mode="wait">
+      <Routes location={location} key={location.pathname}>
+        <Route path="/" element={<PageTransition><Home onStartTour={onStartTour} /></PageTransition>} />
+        <Route path="/services" element={<PageTransition><Services /></PageTransition>} />
+        <Route path="/pricing" element={<PageTransition><PricingPage /></PageTransition>} />
+        <Route path="/case-study" element={<PageTransition><CaseStudyPage /></PageTransition>} />
+        <Route path="/why-us" element={<PageTransition><WhyUsPage /></PageTransition>} />
+        <Route path="/book" element={<PageTransition><BookPage /></PageTransition>} />
+      </Routes>
+    </AnimatePresence>
+  )
+}
+
+function Shell() {
+  const isFirst = !sessionStorage.getItem('mpm_visited')
+  const [showLoader, setShowLoader] = useState(isFirst)
+  const [showWelcome, setShowWelcome] = useState(false)
+  const [tourActive, setTourActive] = useState(false)
+
+  const handleLoaderDone = useCallback(() => {
+    sessionStorage.setItem('mpm_visited', '1')
+    setShowLoader(false)
+    setShowWelcome(true)
   }, [])
+
+  const handleWelcomeDone = useCallback(() => {
+    setShowWelcome(false)
+  }, [])
+
+  const siteReady = !showLoader && !showWelcome
 
   return (
     <div style={{ background: 'var(--black-rich)', minHeight: '100vh' }}>
-      <Navbar />
-      <main>
-        <Hero />
-        <WhatWeBuild />
-        <Pricing />
-        <Maintenance />
-        <CaseStudy />
-        <WhyMPM />
-        <Contact />
-      </main>
-      <Footer />
+      <AnimatePresence>
+        {showLoader && <LoadingScreen key="loader" onComplete={handleLoaderDone} />}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {showWelcome && <DanWelcome key="welcome" onComplete={handleWelcomeDone} />}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {siteReady && (
+          <motion.div
+            key="site"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+          >
+            <Navbar onStartTour={() => setTourActive(true)} />
+            <main>
+              <AnimatedRoutes onStartTour={() => setTourActive(true)} />
+            </main>
+            <Footer />
+            <BackToTop />
+            <GuidedTour active={tourActive} onClose={() => setTourActive(false)} />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
+  )
+}
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/admin" element={<Admin />} />
+        <Route path="/*" element={<Shell />} />
+      </Routes>
+    </BrowserRouter>
   )
 }
