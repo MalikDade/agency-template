@@ -8,6 +8,7 @@ function genSessionId() {
 }
 
 export default function DanChatWidget() {
+<<<<<<< HEAD
   const sessionId = useMemo(() => {
     const key = 'mpm_chat_session'
     const existing = sessionStorage.getItem(key)
@@ -17,6 +18,9 @@ export default function DanChatWidget() {
     return id
   }, [])
 
+=======
+  const [sessionId] = useState(() => crypto.randomUUID())
+>>>>>>> b89e58092111efe5732fce104d159b80ed7436d0
   // apiHistory tracks only what's been sent/received by the API
   const [apiHistory, setApiHistory] = useState([])
   // uiMessages is what's displayed (includes the greeting)
