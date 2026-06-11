@@ -168,6 +168,29 @@ export default function CaseStudy() {
             </div>
           </div>
         </div>
+
+        {/* Imprint Studio Case Study */}
+        <div className="reveal" style={{ marginTop: 80, padding: '48px', border: '1px solid rgba(212,136,42,0.12)', background: 'rgba(255,255,255,0.01)' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 48, alignItems: 'center' }}>
+            <div>
+              <div style={{ fontFamily: 'var(--font-display)', fontSize: 9, letterSpacing: '0.3em', color: 'rgba(212,136,42,0.6)', marginBottom: 12 }}>CASE STUDY 03 — CUSTOM PRINT SHOP</div>
+              <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: 'clamp(28px, 3vw, 42px)', fontWeight: 700, color: 'var(--white)', marginBottom: 16 }}>Imprint Studio</h3>
+              <p style={{ fontSize: 14, color: 'rgba(168,178,193,0.6)', lineHeight: 1.8, marginBottom: 24 }}>A custom print shop built from scratch. Shirts, cups, backdrops, rugs, seat covers, napkins and more. Cinematic white paint splatter desi, AI quote assistant, product showcase, and full lead capture pipeline.</p>
+              <a href="https://imprint-studio-lilac.vercel.app" target="_blank" rel="noreferrer" style={{ display: 'inline-block', padding: '12px 28px', border: '1px solid rgba(212,136,42,0.3)', color: 'var(--gold)', fontFamily: 'var(--font-display)', fontSize: 9, letterSpacing: '0.2em', textTransform: 'uppercase', textDecoration: 'none' }}>View Live Site</a>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+              {[{symbol:'🎨',name:'Paint Splatter Hero',detail:'Cinematic white canvas with colorful paint splatter animations and product slideshow'},{symbol:'◐',name:'AI Quote Assistant',detail:'Chat widget powered by Claude — qualifies orders and captures leads 24/7'},{symbol:'⊕',name:'Product Showcase',detail:'6 product categories with real photos — apparel, drinkware, events, home, auto, business'},{symbol:'◎',name:'Quote Request System',detail:'Full order fg product type, quantity, deadline, and design details'}].map(item => (
+                <div key={item.name} style={{ display: 'flex', gap: 16, alignItems: 'flex-start', padding: '16px 20px', border: '1px solid rgba(212,136,42,0.08)', background: 'rgba(255,255,255,0.02)' }}>
+                  <span style={{ color: 'var(--gold)', fontSize: 18, flexShrink: 0 }}>{item.symbol}</span>
+                  <div>
+                    <div style={{ fontFamily: 'var(--font-display)', fontSize: 11, fontWeight: 700, color: 'var(--white)', letterSpacing: '0.1em', marginBottom: 4 }}>{item.name}</div>
+                    <div style={{ fontSize: 12, color: 'rgba(168,178,193,0.5)', lineHeight: 1.55 }}>{item.detail}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
         {/* Pull quote */}
         <div className="reveal" style={{ marginTop: 56, textAlign: 'center' }}>
           <div style={{ display: 'inline-block', padding: '32px 48px', border: '1px solid rgba(212,136,42,0.15)', background: 'rgba(212,136,42,0.02)', maxWidth: 640 }}>

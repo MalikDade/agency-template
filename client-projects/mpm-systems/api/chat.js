@@ -173,70 +173,10 @@ export default async function handler(req, res) {
     const data = await response.json()
     const reply = data.content?.[0]?.text?.trim() ?? ''
 
-<<<<<<< HEAD
     // Persist chat + lead in background (fire and forget, don't block reply)
     if (sessionId && process.env.SUPABASE_URL) {
       const fullHistory = [...clean, { role: 'assistant', content: reply }]
       persistData(sessionId, fullHistory).catch(() => {})
-=======
-    // Extract email and save lead
-    const EMAIL_RE = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/gi
-    const userMessages = clean.filter(m => m.role === 'user').map(m => m.content).join(' ')
-    const emails = userMessages.match(EMAIL_RE)
-    const leadEmail = emails ? emails[0] : null
-
-    if (leadEmail) {
-      const nameMatch = userMessages.match(/(?:my name is|i am|i\'m)\s+([a-zA-Z]+(?:\s+[a-zA-Z]+)?)/i)
-      const leadName = nameMatch ? nameMatch[1] : null
-
-      const summary = clean.slice(-4).map(m => m.role + ': ' + m.content).join(' | ')
-
-      try {
-        const supabaseUrl = process.env.SUPABASE_URL
-        const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY
-        if (supabaseUrl && supabaseKey) {
-          await fetch(supabaseUrl + '/rest/v1/mpm_leads', {
-            method: 'POST',
-            headers: {
-              apikey: supabaseKey,
-              Authorization: 'Bearer ' + supabaseKey,
-              'Content-Type': 'application/json',
-              Prefer: 'return=minimal',
-            },
-            body: JSON.stringify({
-              name: leadName || 'Website Visitor',
-              email: leadEmail,
-              session_id: 'chat-' + Date.now(),
-              created_at: new Date().toISOString(),
-            }),
-          })
-        }
-      } catch (e) {
-        console.error('[chat] supabase error:', e)
-      }
-
-      try {
-        const resendKey = process.env.RESEND_API_KEY
-        const fromEmail = process.env.RESEND_FROM_EMAIL
-        if (resendKey && fromEmail) {
-          await fetch('https://api.resend.com/emails', {
-            method: 'POST',
-            headers: {
-              Authorization: 'Bearer ' + resendKey,
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              from: fromEmail,
-              to: 'makingpowermovesllc@gmail.com',
-              subject: 'New Lead: ' + (leadName || leadEmail),
-              html: '<h2>New Lead from MPM Systems Chat</h2><p><strong>Name:</strong> ' + (leadName || 'Unknown') + '</p><p><strong>Email:</strong> ' + leadEmail + '</p><p><strong>Summary:</strong> ' + summary + '</p>',
-            }),
-          })
-        }
-      } catch (e) {
-        console.error('[chat] resend error:', e)
-      }
->>>>>>> b89e58092111efe5732fce104d159b80ed7436d0
     }
 
     return res.status(200).json({ reply })

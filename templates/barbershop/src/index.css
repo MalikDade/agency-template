@@ -1,0 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,400&display=swap');
+
+:root {
+  --black: #0F0F0F;
+  --black-mid: #1A1A1A;
+  --white: #FFFFFF;
+  --off-white: #F5F5F5;
+  --red: #C41E3A;
+  --red-light: #E8213F;
+  --blue: #1B3A6B;
+  --blue-light: #2952A3;
+  --chrome: #B8B8B8;
+  --chrome-light: #E0E0E0;
+  --chrome-shine: #F0F0F0;
+  --muted: rgba(15,15,15,0.6);
+  --font-impact: 'Bebas Neue', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+  --font-display: 'Playfair Display', serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { background: var(--off-white); color: var(--black); font-family: var(--font-body); overflow-x: hidden; }
+
+.reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.8s ease, transform 0.8s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-left { opacity: 0; transform: translateX(-40px); transition: opacity 0.8s ease, transform 0.8s ease; }
+.reveal-left.visible { opacity: 1; transform: translateX(0); }
+.reveal-right { opacity: 0; transform: translateX(40px); transition: opacity 0.8s ease, transform 0.8s ease; }
+.reveal-right.visible { opacity: 1; transform: translateX(0); }
+
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes barberSpin { 0% { background-position: 0 0; } 100% { background-position: 0 60px; } }
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
+@keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
+@keyframes shimmer { 0% { background-position: -200% center; } 100% { background-position: 200% center; } }

@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { useState, useCallback } from 'react'
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
@@ -82,20 +81,6 @@ function Shell() {
         )}
       </AnimatePresence>
     </div>
-=======
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import Home from './pages/Home'
-import Admin from './pages/Admin'
-
-export default function App() {
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/admin" element={<Admin />} />
-      </Routes>
-    </BrowserRouter>
->>>>>>> b89e58092111efe5732fce104d159b80ed7436d0
   )
 }
 

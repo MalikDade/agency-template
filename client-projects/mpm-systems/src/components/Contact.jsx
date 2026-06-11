@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { useEffect } from 'react'
 import SlideshowBg from './SlideshowBg'
 
@@ -22,12 +21,6 @@ export default function Contact() {
   }, [])
 
   const labelStyle = {
-=======
-import CalendlyEmbed from './CalendlyEmbed'
-
-export default function Contact() {
-  const label = {
->>>>>>> b89e58092111efe5732fce104d159b80ed7436d0
     fontFamily: 'var(--font-display)',
     fontSize: 9,
     letterSpacing: '0.42em',
@@ -61,17 +54,10 @@ export default function Contact() {
                 What Happens Next
               </div>
               {[
-<<<<<<< HEAD
                 'Pick a time that works for you — takes 30 seconds.',
                 'Get an instant confirmation email with call details.',
                 'Show up and talk to Dan — no prep needed.',
                 'Receive a custom scope and quote within 48 hours.',
-=======
-                'Chat with Dan or pick a time on the calendar.',
-                'Choose an available date and time that fits your schedule.',
-                'We jump on a 20-minute discovery call.',
-                'You receive a custom scope and quote within 48 hours.',
->>>>>>> b89e58092111efe5732fce104d159b80ed7436d0
               ].map((step, i) => (
                 <div key={i} style={{ display: 'flex', gap: 14, alignItems: 'flex-start', marginBottom: 14 }}>
                   <div style={{ width: 22, height: 22, border: '1px solid rgba(212,136,42,0.3)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
@@ -105,7 +91,6 @@ export default function Contact() {
             <div style={{ marginTop: 48, width: 80, height: 2, background: 'linear-gradient(90deg, var(--gold), transparent)' }} />
           </div>
 
-<<<<<<< HEAD
           {/* Right: Calendly Embed */}
           <div className="reveal-right" style={{ transitionDelay: '0.15s' }}>
             <div style={{
@@ -131,17 +116,6 @@ export default function Contact() {
 
             <p style={{ textAlign: 'center', marginTop: 16, fontSize: 10, color: 'rgba(168,178,193,0.25)', fontFamily: 'var(--font-display)', letterSpacing: '0.2em' }}>
               NO SPAM. NO PRESSURE. JUST A CONVERSATION.
-=======
-          <div className="reveal-right" style={{ transitionDelay: '0.15s' }}>
-            <div style={{ marginBottom: 16 }}>
-              <div style={{ fontFamily: 'var(--font-display)', fontSize: 9, letterSpacing: '0.35em', color: 'rgba(212,136,42,0.55)', textTransform: 'uppercase' }}>
-                Select Your Time
-              </div>
-            </div>
-            <CalendlyEmbed height={720} minWidth={280} />
-            <p style={{ fontSize: 11, color: 'rgba(168,178,193,0.3)', textAlign: 'center', fontFamily: 'var(--font-display)', letterSpacing: '0.15em', marginTop: 16 }}>
-              No spam. No pressure. Just a conversation.
->>>>>>> b89e58092111efe5732fce104d159b80ed7436d0
             </p>
           </div>
 
