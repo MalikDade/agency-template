@@ -46,6 +46,14 @@ export default function CaseStudy() {
         {/* Main card */}
         <div style={{ border: '1px solid rgba(212,136,42,0.25)', background: 'rgba(212,136,42,0.025)', position: 'relative', overflow: 'hidden' }}>
 
+          {/* Real client photo strip */}
+          <div style={{
+            height: 220,
+            backgroundImage: 'linear-gradient(180deg, rgba(8,15,23,0.15) 0%, rgba(8,15,23,0.95) 100%), url(https://theplatinumline.com/__l5e/assets-v1/c9a7e9b5-698c-4d3c-8642-fffac7272ff4/hero-rhinestone-v2.png)',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center 30%',
+          }} />
+
           {/* Gold top bar */}
           <div style={{ height: 3, background: 'linear-gradient(90deg, var(--gold), rgba(212,136,42,0.2))' }} />
 
@@ -62,8 +70,13 @@ export default function CaseStudy() {
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                     background: 'rgba(212,136,42,0.06)',
                     flexShrink: 0,
+                    padding: 10,
                   }}>
-                    <span style={{ fontFamily: 'var(--font-display)', fontSize: 10, color: 'var(--gold)', letterSpacing: '0.05em', textAlign: 'center', lineHeight: 1.4 }}>THE<br />PLT<br />LINE</span>
+                    <img
+                      src="https://theplatinumline.com/__l5e/assets-v1/034afcbc-f948-4b18-8835-2352e040b8b3/tpl-logo-v2.png"
+                      alt="The Platinum Line logo"
+                      style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                    />
                   </div>
                   <div style={{ paddingTop: 4 }}>
                     <div style={{ fontFamily: 'var(--font-serif)', fontSize: 22, fontWeight: 700, color: 'var(--white)', marginBottom: 4 }}>
