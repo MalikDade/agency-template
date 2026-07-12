@@ -7,7 +7,7 @@ import {
   parseVapiArgs,
   vapiResponse,
 } from './_calendly.js'
-import { getSupabase } from '../_supabase.js'
+import { getSupabase, getSetting } from '../_supabase.js'
 
 const CORS = {
   'Access-Control-Allow-Origin': '*',
@@ -102,6 +102,12 @@ export default async function handler(req, res) {
 
   const args = parseVapiArgs(req.body || {})
   const toolCallId = args._toolCallId
+
+  const vapiOn = await getSetting('vapi_available', 'true')
+  if (vapiOn === 'false') {
+    const msg = 'Our AI booking assistant is offline right now. Please ask the caller to visit mpmsystems.net/book or call back later.'
+    return res.status(200).json(vapiResponse(msg, toolCallId))
+  }
 
   const { name, email, phone, chosen_time, notes } = args
 

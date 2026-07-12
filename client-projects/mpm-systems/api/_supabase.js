@@ -44,3 +44,40 @@ export function getSupabase() {
   if (!url || !key) throw new Error('Supabase env vars not set: SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY required')
   return createClient(url, key, { auth: { persistSession: false } })
 }
+
+// Reads every row from mpm_settings into a flat { key: value } object.
+export async function getSettings() {
+  try {
+    const sb = getSupabase()
+    const { data, error } = await sb.from('mpm_settings').select('key, value')
+    if (error) throw error
+    const out = {}
+    for (const row of data || []) out[row.key] = row.value
+    return out
+  } catch (e) {
+    console.error('[getSettings]', e.message)
+    return {}
+  }
+}
+
+// Reads a single setting, falling back if unset/unreachable.
+export async function getSetting(key, fallback = null) {
+  try {
+    const sb = getSupabase()
+    const { data, error } = await sb.from('mpm_settings').select('value').eq('key', key).maybeSingle()
+    if (error) throw error
+    return data ? data.value : fallback
+  } catch (e) {
+    console.error('[getSetting]', key, e.message)
+    return fallback
+  }
+}
+
+// Upserts multiple key/value pairs at once.
+export async function upsertSettings(obj) {
+  const sb = getSupabase()
+  const rows = Object.entries(obj).map(([key, value]) => ({ key, value: String(value), updated_at: new Date().toISOString() }))
+  const { error } = await sb.from('mpm_settings').upsert(rows, { onConflict: 'key' })
+  if (error) throw error
+  return true
+}

@@ -55,7 +55,7 @@ export default function Maintenance() {
             Keep your system{' '}
             <em style={{ color: 'var(--gold)', fontStyle: 'italic' }}>running at full power.</em>
           </h2>
-          <p style={{ fontSize: 15, color: 'rgba(168,178,193,0.5)', maxWidth: 440, margin: '0 auto', lineHeight: 1.7 }}>
+          <p style={{ fontSize: 15, color: 'rgba(168,178,193,0.72)', maxWidth: 440, margin: '0 auto', lineHeight: 1.7 }}>
             After launch, your system needs fuel. Monthly plans keep your AI sharp, your site fast, and your business growing.
           </p>
         </div>
@@ -86,10 +86,10 @@ export default function Maintenance() {
 
               <div style={{ display: 'flex', alignItems: 'baseline', gap: 4, marginBottom: 16 }}>
                 <span style={{ fontFamily: 'var(--font-display)', fontSize: 40, fontWeight: 900, color: 'var(--white)' }}>{plan.price}</span>
-                <span style={{ fontFamily: 'var(--font-display)', fontSize: 10, letterSpacing: '0.2em', color: 'rgba(168,178,193,0.4)' }}>{plan.period}</span>
+                <span style={{ fontFamily: 'var(--font-display)', fontSize: 10, letterSpacing: '0.2em', color: 'rgba(168,178,193,0.65)' }}>{plan.period}</span>
               </div>
 
-              <p style={{ fontSize: 13, color: 'rgba(168,178,193,0.55)', lineHeight: 1.65, marginBottom: 28, minHeight: 52 }}>{plan.desc}</p>
+              <p style={{ fontSize: 13, color: 'rgba(168,178,193,0.75)', lineHeight: 1.65, marginBottom: 28, minHeight: 52 }}>{plan.desc}</p>
 
               <div style={{ height: 1, background: 'rgba(212,136,42,0.1)', marginBottom: 24 }} />
 
@@ -109,7 +109,7 @@ export default function Maintenance() {
           ))}
         </div>
 
-        <p className="reveal" style={{ textAlign: 'center', marginTop: 32, fontSize: 13, color: 'rgba(168,178,193,0.3)', fontStyle: 'italic', fontFamily: 'var(--font-serif)' }}>
+        <p className="reveal" style={{ textAlign: 'center', marginTop: 32, fontSize: 13, color: 'rgba(168,178,193,0.56)', fontStyle: 'italic', fontFamily: 'var(--font-serif)' }}>
           Maintenance plans begin 30 days after project launch. Cancel anytime with 30 days notice.
         </p>
       </div>

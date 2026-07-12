@@ -6,6 +6,7 @@ import {
   parseVapiArgs,
   vapiResponse,
 } from './_calendly.js'
+import { getSetting } from '../_supabase.js'
 
 const CORS = {
   'Access-Control-Allow-Origin': '*',
@@ -17,15 +18,21 @@ export default async function handler(req, res) {
   Object.entries(CORS).forEach(([k, v]) => res.setHeader(k, v))
   if (req.method === 'OPTIONS') return res.status(204).end()
 
+  const args = parseVapiArgs(req.body || {})
+  const toolCallId = args._toolCallId
+
+  const vapiOn = await getSetting('vapi_available', 'true')
+  if (vapiOn === 'false') {
+    const msg = 'Our AI booking assistant is offline right now. Please ask the caller to visit mpmsystems.net/book or call back later.'
+    return res.status(200).json(vapiResponse(msg, toolCallId))
+  }
+
   const token = process.env.CALENDLY_TOKEN
   if (!token) {
     const msg = 'Calendly is not configured. Please ask the caller to visit mpmsystems.net to book a call.'
-    return res.status(200).json(vapiResponse(msg))
+    return res.status(200).json(vapiResponse(msg, toolCallId))
   }
 
-  // Parse args — supports both direct REST call and VAPI tool-call envelope
-  const args = parseVapiArgs(req.body || {})
-  const toolCallId = args._toolCallId
   const daysAhead = Math.min(parseInt(args.days) || 7, 7) // Calendly max window = 7 days
 
   try {

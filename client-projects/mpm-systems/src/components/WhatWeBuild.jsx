@@ -60,7 +60,7 @@ export default function WhatWeBuild() {
             Every system. Custom-built.<br />
             <em style={{ color: 'var(--gold)', fontStyle: 'italic' }}>Owned entirely by you.</em>
           </h2>
-          <p style={{ fontSize: 16, color: 'rgba(168,178,193,0.55)', maxWidth: 520, lineHeight: 1.75 }}>
+          <p style={{ fontSize: 16, color: 'rgba(168,178,193,0.75)', maxWidth: 520, lineHeight: 1.75 }}>
             We don't install plugins. We engineer systems — AI-integrated, fully yours, built to run your business while you sleep.
           </p>
         </motion.div>
@@ -113,7 +113,7 @@ export default function WhatWeBuild() {
                 <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: 22, fontWeight: 700, color: 'var(--white)', marginBottom: 12, lineHeight: 1.2 }}>
                   {s.title}
                 </h3>
-                <p style={{ fontSize: 14, color: 'rgba(168,178,193,0.55)', lineHeight: 1.72 }}>{s.desc}</p>
+                <p style={{ fontSize: 14, color: 'rgba(168,178,193,0.75)', lineHeight: 1.72 }}>{s.desc}</p>
 
                 <div style={{ position: 'absolute', bottom: 14, right: 14, fontFamily: 'var(--font-display)', fontSize: 9, color: 'rgba(212,136,42,0.18)', letterSpacing: '0.2em' }}>
                   0{i + 1}

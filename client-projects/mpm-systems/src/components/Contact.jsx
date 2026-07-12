@@ -45,7 +45,7 @@ export default function Contact() {
               <em style={{ color: 'var(--gold)', fontStyle: 'italic' }}>business needs.</em>
             </h2>
 
-            <p style={{ fontSize: 16, color: 'rgba(168,178,193,0.58)', lineHeight: 1.78, marginBottom: 44 }}>
+            <p style={{ fontSize: 16, color: 'rgba(168,178,193,0.76)', lineHeight: 1.78, marginBottom: 44 }}>
               No templates. No upsells. Just a real conversation with Dan about what you're trying to build and whether MPM Systems is the right fit. Pick a time that works for you — most calls are 20 minutes.
             </p>
 
@@ -114,7 +114,7 @@ export default function Contact() {
               />
             </div>
 
-            <p style={{ textAlign: 'center', marginTop: 16, fontSize: 10, color: 'rgba(168,178,193,0.25)', fontFamily: 'var(--font-display)', letterSpacing: '0.2em' }}>
+            <p style={{ textAlign: 'center', marginTop: 16, fontSize: 10, color: 'rgba(168,178,193,0.72)', fontFamily: 'var(--font-display)', letterSpacing: '0.2em' }}>
               NO SPAM. NO PRESSURE. JUST A CONVERSATION.
             </p>
           </div>

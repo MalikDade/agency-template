@@ -91,7 +91,7 @@ export default function Pricing() {
             Choose your level of{' '}
             <em style={{ color: 'var(--gold)', fontStyle: 'italic' }}>power.</em>
           </h2>
-          <p style={{ fontSize: 16, color: 'rgba(168,178,193,0.5)', maxWidth: 480, margin: '0 auto', lineHeight: 1.75 }}>
+          <p style={{ fontSize: 16, color: 'rgba(168,178,193,0.72)', maxWidth: 480, margin: '0 auto', lineHeight: 1.75 }}>
             Every build is a one-time investment. You own everything. No subscriptions, no platform fees, no lock-in.
           </p>
         </motion.div>
@@ -147,7 +147,7 @@ export default function Pricing() {
                     {plan.price}
                   </span>
                 </div>
-                <div style={{ fontFamily: 'var(--font-display)', fontSize: 9, letterSpacing: '0.3em', color: 'rgba(168,178,193,0.4)', marginBottom: 20, textTransform: 'uppercase' }}>
+                <div style={{ fontFamily: 'var(--font-display)', fontSize: 9, letterSpacing: '0.3em', color: 'rgba(168,178,193,0.65)', marginBottom: 20, textTransform: 'uppercase' }}>
                   {plan.period}
                 </div>
 
@@ -177,7 +177,7 @@ export default function Pricing() {
         </div>
 
         {/* Footnote */}
-        <p className="reveal" style={{ textAlign: 'center', marginTop: 40, fontSize: 13, color: 'rgba(168,178,193,0.35)', fontStyle: 'italic', fontFamily: 'var(--font-serif)' }}>
+        <p className="reveal" style={{ textAlign: 'center', marginTop: 40, fontSize: 13, color: 'rgba(168,178,193,0.6)', fontStyle: 'italic', fontFamily: 'var(--font-serif)' }}>
           All builds include a discovery call, project scope document, and final delivery handoff. Pricing is fixed — no surprise bills.
         </p>
       </div>

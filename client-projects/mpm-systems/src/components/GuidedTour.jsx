@@ -98,7 +98,7 @@ export default function GuidedTour({ active, onClose }) {
               </span>
               <button
                 onClick={onClose}
-                style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'rgba(168,178,193,0.5)', fontSize: 14, lineHeight: 1, padding: '0 0 0 12px' }}
+                style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'rgba(168,178,193,0.72)', fontSize: 14, lineHeight: 1, padding: '0 0 0 12px' }}
               >
                 ✕
               </button>
@@ -133,7 +133,7 @@ export default function GuidedTour({ active, onClose }) {
                 disabled={step === 0}
                 style={{
                   flex: 1, padding: '8px', border: '1px solid rgba(212,136,42,0.25)',
-                  background: 'transparent', color: step === 0 ? 'rgba(168,178,193,0.2)' : 'var(--platinum)',
+                  background: 'transparent', color: step === 0 ? 'rgba(168,178,193,0.72)' : 'var(--platinum)',
                   fontFamily: 'var(--font-display)', fontSize: 8, letterSpacing: '0.25em',
                   cursor: step === 0 ? 'not-allowed' : 'pointer', transition: 'all 0.2s',
                 }}

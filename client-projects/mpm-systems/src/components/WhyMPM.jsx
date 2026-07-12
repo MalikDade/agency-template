@@ -60,7 +60,7 @@ export default function WhyMPM() {
             </h2>
           </div>
           <div className="reveal-right" style={{ display: 'flex', alignItems: 'flex-end' }}>
-            <p style={{ fontSize: 16, color: 'rgba(168,178,193,0.58)', lineHeight: 1.78 }}>
+            <p style={{ fontSize: 16, color: 'rgba(168,178,193,0.76)', lineHeight: 1.78 }}>
               Web agencies build websites. We build systems — AI-integrated, revenue-generating machines that work for your business 24 hours a day. The difference isn't just technical. It's the outcome your clients actually get.
             </p>
           </div>
@@ -91,7 +91,7 @@ export default function WhyMPM() {
               <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: 22, fontWeight: 700, color: 'var(--white)', marginBottom: 14, lineHeight: 1.25 }}>
                 {r.title}
               </h3>
-              <p style={{ fontSize: 14, color: 'rgba(168,178,193,0.55)', lineHeight: 1.75 }}>{r.body}</p>
+              <p style={{ fontSize: 14, color: 'rgba(168,178,193,0.75)', lineHeight: 1.75 }}>{r.body}</p>
             </div>
           ))}
         </div>
@@ -103,7 +103,7 @@ export default function WhyMPM() {
             <div style={{ fontFamily: 'var(--font-serif)', fontSize: 'clamp(22px, 3vw, 32px)', fontWeight: 900, color: 'var(--white)', marginBottom: 8, lineHeight: 1.2 }}>
               Ready to build something that <em style={{ color: 'var(--gold)', fontStyle: 'italic' }}>works?</em>
             </div>
-            <p style={{ fontSize: 15, color: 'rgba(168,178,193,0.55)' }}>20-minute discovery call. Free. No pitch.</p>
+            <p style={{ fontSize: 15, color: 'rgba(168,178,193,0.75)' }}>20-minute discovery call. Free. No pitch.</p>
           </div>
           <Link to="/book" className="btn-gold" style={{ fontSize: 11, whiteSpace: 'nowrap', textDecoration: 'none' }}>
             Book a Discovery Call →

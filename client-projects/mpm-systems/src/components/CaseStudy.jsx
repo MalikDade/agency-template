@@ -83,7 +83,7 @@ export default function CaseStudy() {
                       The Platinum Line
                     </div>
                     <div style={{ fontSize: 13, color: 'rgba(212,136,42,0.7)' }}>Luxury Nail Studio · Stringer, Mississippi</div>
-                    <div style={{ fontSize: 13, color: 'rgba(168,178,193,0.4)', marginTop: 2 }}>Owner: Cynthia</div>
+                    <div style={{ fontSize: 13, color: 'rgba(168,178,193,0.65)', marginTop: 2 }}>Owner: Cynthia</div>
                   </div>
                 </div>
 
@@ -108,7 +108,7 @@ export default function CaseStudy() {
                   {RESULTS.map(r => (
                     <div key={r.label} style={{ padding: '16px 12px', border: '1px solid rgba(212,136,42,0.12)', background: 'rgba(212,136,42,0.03)', textAlign: 'center' }}>
                       <div style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(18px, 2.5vw, 24px)', fontWeight: 900, color: 'var(--gold)', lineHeight: 1 }}>{r.number}</div>
-                      <div style={{ fontFamily: 'var(--font-display)', fontSize: 8, letterSpacing: '0.25em', color: 'rgba(168,178,193,0.45)', marginTop: 6, textTransform: 'uppercase' }}>{r.label}</div>
+                      <div style={{ fontFamily: 'var(--font-display)', fontSize: 8, letterSpacing: '0.25em', color: 'rgba(168,178,193,0.68)', marginTop: 6, textTransform: 'uppercase' }}>{r.label}</div>
                     </div>
                   ))}
                 </div>
@@ -147,7 +147,7 @@ export default function CaseStudy() {
                       <span style={{ color: 'var(--gold)', fontSize: 18, flexShrink: 0, marginTop: 1 }}>{item.symbol}</span>
                       <div>
                         <div style={{ fontFamily: 'var(--font-display)', fontSize: 11, fontWeight: 700, color: 'var(--white)', letterSpacing: '0.1em', marginBottom: 4 }}>{item.name}</div>
-                        <div style={{ fontSize: 12, color: 'rgba(168,178,193,0.5)', lineHeight: 1.55 }}>{item.detail}</div>
+                        <div style={{ fontSize: 12, color: 'rgba(168,178,193,0.72)', lineHeight: 1.55 }}>{item.detail}</div>
                       </div>
                     </div>
                   ))}
@@ -162,7 +162,7 @@ export default function CaseStudy() {
         {/* Concept builds divider */}
         <div className="reveal" style={{ marginTop: 88, marginBottom: 8, textAlign: 'center' }}>
           <p className="label" style={{ marginBottom: 10 }}>More Of What We Build</p>
-          <p style={{ fontSize: 13, color: 'rgba(168,178,193,0.45)', maxWidth: 480, margin: '0 auto' }}>
+          <p style={{ fontSize: 13, color: 'rgba(168,178,193,0.68)', maxWidth: 480, margin: '0 auto' }}>
             Concept builds crafted to show range — not existing clients.
           </p>
         </div>
@@ -182,7 +182,7 @@ export default function CaseStudy() {
                   <span style={{ color: 'var(--gold)', fontSize: 18, flexShrink: 0 }}>{item.symbol}</span>
                   <div>
                     <div style={{ fontFamily: 'var(--font-display)', fontSize: 11, fontWeight: 700, color: 'var(--white)', letterSpacing: '0.1em', marginBottom: 4 }}>{item.name}</div>
-                    <div style={{ fontSize: 12, color: 'rgba(168,178,193,0.5)', lineHeight: 1.55 }}>{item.detail}</div>
+                    <div style={{ fontSize: 12, color: 'rgba(168,178,193,0.72)', lineHeight: 1.55 }}>{item.detail}</div>
                   </div>
                 </div>
               ))}
@@ -205,7 +205,7 @@ export default function CaseStudy() {
                   <span style={{ color: 'var(--gold)', fontSize: 18, flexShrink: 0 }}>{item.symbol}</span>
                   <div>
                     <div style={{ fontFamily: 'var(--font-display)', fontSize: 11, fontWeight: 700, color: 'var(--white)', letterSpacing: '0.1em', marginBottom: 4 }}>{item.name}</div>
-                    <div style={{ fontSize: 12, color: 'rgba(168,178,193,0.5)', lineHeight: 1.55 }}>{item.detail}</div>
+                    <div style={{ fontSize: 12, color: 'rgba(168,178,193,0.72)', lineHeight: 1.55 }}>{item.detail}</div>
                   </div>
                 </div>
               ))}
