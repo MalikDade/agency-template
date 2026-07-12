@@ -161,7 +161,7 @@ export default function DanChatWidget() {
           <div style={{ fontFamily: 'var(--font-display)', fontSize: 11, fontWeight: 700, color: 'var(--white)', letterSpacing: '0.08em' }}>
             Dan Carter
           </div>
-          <div style={{ fontSize: 10, color: 'rgba(212,136,42,0.8)', marginTop: 1 }}>
+          <div style={{ fontSize: 12, fontWeight: 500, color: 'rgba(232,168,85,0.9)', marginTop: 2 }}>
             Director of Client Solutions
           </div>
         </div>

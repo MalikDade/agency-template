@@ -221,7 +221,7 @@ export default function Hero({ onStartTour }) {
             <div style={{ fontFamily: 'var(--font-serif)', fontSize: 'clamp(20px, 2.5vw, 26px)', fontWeight: 700, color: 'var(--white)', marginBottom: 4 }}>
               Dan Carter
             </div>
-            <div className="label" style={{ fontSize: 9, letterSpacing: '0.38em', color: 'rgba(212,136,42,0.85)' }}>
+            <div className="label" style={{ fontSize: 13, fontWeight: 600, letterSpacing: '0.15em', color: 'rgba(232,168,85,0.95)' }}>
               Director of Client Solutions
             </div>
           </motion.div>
@@ -251,12 +251,13 @@ export default function Hero({ onStartTour }) {
                 transition={{ delay: 0.8 + i * 0.06, duration: 0.3 }}
                 whileHover={{ borderColor: 'rgba(212,136,42,0.65)', background: 'rgba(212,136,42,0.1)', scale: 1.02 }}
                 style={{
-                  padding: '6px 16px',
+                  padding: '7px 16px',
                   border: '1px solid rgba(212,136,42,0.3)',
                   fontFamily: 'var(--font-display)',
-                  fontSize: 9,
-                  letterSpacing: '0.3em',
-                  color: 'rgba(212,136,42,0.9)',
+                  fontSize: 12,
+                  fontWeight: 600,
+                  letterSpacing: '0.15em',
+                  color: 'rgba(232,168,85,0.95)',
                   textTransform: 'uppercase',
                   background: 'rgba(212,136,42,0.06)',
                   cursor: 'default',
@@ -278,12 +279,13 @@ export default function Hero({ onStartTour }) {
                 onClick={onStartTour}
                 style={{
                   background: 'none',
-                  border: '1px solid rgba(212,136,42,0.25)',
-                  color: 'rgba(212,136,42,0.7)',
+                  border: '1px solid rgba(212,136,42,0.35)',
+                  color: 'rgba(232,168,85,0.9)',
                   fontFamily: 'var(--font-display)',
-                  fontSize: 9,
-                  letterSpacing: '0.35em',
-                  padding: '9px 20px',
+                  fontSize: 12,
+                  fontWeight: 600,
+                  letterSpacing: '0.15em',
+                  padding: '10px 20px',
                   cursor: 'pointer',
                   display: 'inline-flex',
                   alignItems: 'center',
@@ -296,8 +298,8 @@ export default function Hero({ onStartTour }) {
                   e.currentTarget.style.background = 'rgba(212,136,42,0.06)'
                 }}
                 onMouseLeave={e => {
-                  e.currentTarget.style.borderColor = 'rgba(212,136,42,0.25)'
-                  e.currentTarget.style.color = 'rgba(212,136,42,0.7)'
+                  e.currentTarget.style.borderColor = 'rgba(212,136,42,0.35)'
+                  e.currentTarget.style.color = 'rgba(232,168,85,0.9)'
                   e.currentTarget.style.background = 'none'
                 }}
               >
@@ -353,7 +355,7 @@ export default function Hero({ onStartTour }) {
                 <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.36 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.11 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.09 8.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
               </svg>
               <div>
-                <div style={{ fontFamily: 'var(--font-display)', fontSize: 8, letterSpacing: '0.3em', color: 'rgba(212,136,42,0.65)', marginBottom: 2 }}>
+                <div style={{ fontFamily: 'var(--font-display)', fontSize: 11, fontWeight: 600, letterSpacing: '0.15em', color: 'rgba(232,168,85,0.9)', marginBottom: 3 }}>
                   CALL DAN DIRECTLY — AVAILABLE 24/7
                 </div>
                 <div style={{ fontFamily: 'var(--font-display)', fontSize: 13, fontWeight: 700, color: 'var(--white)', letterSpacing: '0.06em' }}>
