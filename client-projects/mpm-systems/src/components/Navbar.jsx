@@ -18,6 +18,7 @@ const linkBase = {
   textDecoration: 'none',
   transition: 'color 0.2s',
   cursor: 'pointer',
+  whiteSpace: 'nowrap',
 }
 
 export default function Navbar({ onStartTour }) {
@@ -72,7 +73,7 @@ export default function Navbar({ onStartTour }) {
       </Link>
 
       {/* Desktop nav */}
-      <div className="hidden md:flex" style={{ alignItems: 'center', gap: 36 }}>
+      <div className="hidden md:flex" style={{ alignItems: 'center', gap: 26 }}>
         {LINKS.map(l => (
           <NavLink key={l.to} to={l.to} end={!!l.end} style={getNavStyle}
             onMouseEnter={e => { if (!e.currentTarget.style.color.includes('212')) e.currentTarget.style.color = 'var(--gold)' }}

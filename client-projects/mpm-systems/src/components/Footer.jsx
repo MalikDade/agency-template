@@ -32,8 +32,9 @@ const COLS = [
 ]
 
 const linkStyle = {
-  fontSize: 13,
-  color: 'rgba(168,178,193,0.68)',
+  fontSize: 14,
+  fontWeight: 500,
+  color: 'rgba(232,236,240,0.88)',
   textDecoration: 'none',
   transition: 'color 0.2s',
 }
@@ -58,7 +59,7 @@ export default function Footer() {
                 <div style={{ fontFamily: 'var(--font-display)', fontSize: 10, color: 'rgba(212,136,42,0.65)', letterSpacing: '0.2em', marginTop: 3 }}>BY MAKING POWER MOVES LLC</div>
               </div>
             </Link>
-            <p style={{ fontSize: 13, color: 'rgba(168,178,193,0.62)', lineHeight: 1.65, maxWidth: 240 }}>
+            <p style={{ fontSize: 13, color: 'rgba(232,236,240,0.8)', lineHeight: 1.65, maxWidth: 240 }}>
               AI-powered business systems for small businesses ready to scale without limits.
             </p>
             <a
@@ -95,7 +96,7 @@ export default function Footer() {
           {/* Nav columns */}
           {COLS.map(c => (
             <div key={c.heading}>
-              <div style={{ fontFamily: 'var(--font-display)', fontSize: 12, letterSpacing: '0.25em', color: 'rgba(212,136,42,0.65)', marginBottom: 20, textTransform: 'uppercase' }}>
+              <div style={{ fontFamily: 'var(--font-display)', fontSize: 13, fontWeight: 700, letterSpacing: '0.2em', color: 'rgba(232,168,85,0.95)', marginBottom: 20, textTransform: 'uppercase' }}>
                 {c.heading}
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
@@ -108,7 +109,7 @@ export default function Footer() {
                       rel="noopener noreferrer"
                       style={linkStyle}
                       onMouseEnter={e => (e.target.style.color = 'var(--gold)')}
-                      onMouseLeave={e => (e.target.style.color = 'rgba(168,178,193,0.68)')}
+                      onMouseLeave={e => (e.target.style.color = 'rgba(232,236,240,0.88)')}
                     >
                       {label}
                     </a>
@@ -118,7 +119,7 @@ export default function Footer() {
                       to={to}
                       style={linkStyle}
                       onMouseEnter={e => (e.target.style.color = 'var(--gold)')}
-                      onMouseLeave={e => (e.target.style.color = 'rgba(168,178,193,0.68)')}
+                      onMouseLeave={e => (e.target.style.color = 'rgba(232,236,240,0.88)')}
                     >
                       {label}
                     </Link>
@@ -132,7 +133,7 @@ export default function Footer() {
         <div className="gold-rule" style={{ marginBottom: 28 }} />
 
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12 }}>
-          <span style={{ fontSize: 12, color: 'rgba(168,178,193,0.75)', fontFamily: 'var(--font-display)', letterSpacing: '0.12em' }}>
+          <span style={{ fontSize: 13, color: 'rgba(232,236,240,0.85)', fontFamily: 'var(--font-display)', letterSpacing: '0.1em' }}>
             © {year} MPM Systems. A Making Power Moves LLC Company.
           </span>
           <span style={{ fontFamily: 'var(--font-serif)', fontSize: 12, fontStyle: 'italic', color: 'rgba(212,136,42,0.3)' }}>
