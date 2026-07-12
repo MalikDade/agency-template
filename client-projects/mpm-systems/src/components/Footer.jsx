@@ -51,11 +51,11 @@ export default function Footer() {
           <div>
             <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 20, textDecoration: 'none' }}>
               <div style={{ width: 38, height: 38, border: '1px solid rgba(212,136,42,0.45)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(212,136,42,0.06)' }}>
-                <span style={{ fontFamily: 'var(--font-display)', fontSize: 9, color: 'var(--gold)', fontWeight: 700 }}>MPM</span>
+                <span style={{ fontFamily: 'var(--font-display)', fontSize: 12, color: 'var(--gold)', fontWeight: 700 }}>MPM</span>
               </div>
               <div>
-                <div style={{ fontFamily: 'var(--font-display)', fontSize: 12, fontWeight: 900, color: 'var(--white)', letterSpacing: '0.18em' }}>MPM SYSTEMS</div>
-                <div style={{ fontFamily: 'var(--font-display)', fontSize: 7, color: 'rgba(212,136,42,0.55)', letterSpacing: '0.3em', marginTop: 2 }}>BY MAKING POWER MOVES LLC</div>
+                <div style={{ fontFamily: 'var(--font-display)', fontSize: 13, fontWeight: 900, color: 'var(--white)', letterSpacing: '0.18em' }}>MPM SYSTEMS</div>
+                <div style={{ fontFamily: 'var(--font-display)', fontSize: 10, color: 'rgba(212,136,42,0.65)', letterSpacing: '0.2em', marginTop: 3 }}>BY MAKING POWER MOVES LLC</div>
               </div>
             </Link>
             <p style={{ fontSize: 13, color: 'rgba(168,178,193,0.62)', lineHeight: 1.65, maxWidth: 240 }}>
@@ -71,10 +71,10 @@ export default function Footer() {
                 <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.36 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.11 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.09 8.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
               </svg>
               <div>
-                <div style={{ fontFamily: 'var(--font-display)', fontSize: 7.5, letterSpacing: '0.28em', color: 'rgba(212,136,42,0.55)', marginBottom: 2 }}>
+                <div style={{ fontFamily: 'var(--font-display)', fontSize: 10, letterSpacing: '0.2em', color: 'rgba(212,136,42,0.65)', marginBottom: 3 }}>
                   CALL DAN DIRECTLY — 24/7
                 </div>
-                <div style={{ fontFamily: 'var(--font-display)', fontSize: 12, fontWeight: 700, color: 'rgba(212,136,42,0.9)', letterSpacing: '0.05em' }}>
+                <div style={{ fontFamily: 'var(--font-display)', fontSize: 14, fontWeight: 700, color: 'rgba(212,136,42,0.9)', letterSpacing: '0.05em' }}>
                   +1 (601) 531-8139
                 </div>
               </div>
@@ -84,7 +84,7 @@ export default function Footer() {
               href="https://makingpowermovesllc.com"
               target="_blank"
               rel="noopener noreferrer"
-              style={{ display: 'inline-flex', alignItems: 'center', gap: 6, marginTop: 16, fontFamily: 'var(--font-display)', fontSize: 8, letterSpacing: '0.3em', color: 'rgba(212,136,42,0.5)', textDecoration: 'none', transition: 'color 0.2s' }}
+              style={{ display: 'inline-flex', alignItems: 'center', gap: 6, marginTop: 16, fontFamily: 'var(--font-display)', fontSize: 11, letterSpacing: '0.18em', color: 'rgba(212,136,42,0.65)', textDecoration: 'none', transition: 'color 0.2s' }}
               onMouseEnter={e => (e.currentTarget.style.color = 'var(--gold)')}
               onMouseLeave={e => (e.currentTarget.style.color = 'rgba(212,136,42,0.5)')}
             >
@@ -95,7 +95,7 @@ export default function Footer() {
           {/* Nav columns */}
           {COLS.map(c => (
             <div key={c.heading}>
-              <div style={{ fontFamily: 'var(--font-display)', fontSize: 9, letterSpacing: '0.4em', color: 'rgba(212,136,42,0.5)', marginBottom: 20, textTransform: 'uppercase' }}>
+              <div style={{ fontFamily: 'var(--font-display)', fontSize: 12, letterSpacing: '0.25em', color: 'rgba(212,136,42,0.65)', marginBottom: 20, textTransform: 'uppercase' }}>
                 {c.heading}
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>

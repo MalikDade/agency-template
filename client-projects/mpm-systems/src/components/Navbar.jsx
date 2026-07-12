@@ -11,8 +11,9 @@ const LINKS = [
 
 const linkBase = {
   fontFamily: 'var(--font-display)',
-  fontSize: 9,
-  letterSpacing: '0.3em',
+  fontSize: 13,
+  fontWeight: 600,
+  letterSpacing: '0.15em',
   textTransform: 'uppercase',
   textDecoration: 'none',
   transition: 'color 0.2s',
@@ -91,7 +92,7 @@ export default function Navbar({ onStartTour }) {
               border: 'none',
               color: 'rgba(212,136,42,0.55)',
               display: 'flex', alignItems: 'center', gap: 6,
-              fontSize: 8,
+              fontSize: 12,
             }}
             onMouseEnter={e => (e.currentTarget.style.color = 'var(--gold)')}
             onMouseLeave={e => (e.currentTarget.style.color = 'rgba(212,136,42,0.55)')}
@@ -137,7 +138,7 @@ export default function Navbar({ onStartTour }) {
             <NavLink key={l.to} to={l.to} onClick={() => setMenuOpen(false)}
               style={({ isActive }) => ({
                 ...linkBase,
-                fontSize: 11,
+                fontSize: 15,
                 color: isActive ? 'var(--gold)' : 'var(--platinum)',
               })}
             >

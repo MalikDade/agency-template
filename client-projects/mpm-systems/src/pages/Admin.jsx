@@ -87,7 +87,7 @@ function HeroBanner({ newToday, systemOk }) {
       <SlideshowBg images={HERO_IMAGES} overlay="linear-gradient(100deg, rgba(6,13,20,0.82) 0%, rgba(6,13,20,0.6) 55%, rgba(6,13,20,0.42) 100%)" />
       <SparkleField count={18} />
       <div style={{ position: 'relative', zIndex: 1 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontFamily: 'var(--font-display)', fontSize: 10, letterSpacing: '0.35em', color: 'rgba(212,136,42,0.75)', textTransform: 'uppercase' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontFamily: 'var(--font-display)', fontSize: 13, letterSpacing: '0.35em', color: 'rgba(212,136,42,0.75)', textTransform: 'uppercase' }}>
           Command Center
         </div>
         <h1 style={{ fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontWeight: 700, color: 'var(--gold)', fontSize: 'clamp(30px, 4vw, 46px)', marginTop: 10, textShadow: '0 2px 24px rgba(0,0,0,0.7)' }}>
@@ -116,7 +116,7 @@ function LiveBadge({ lastSynced }) {
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 14px', background: 'rgba(34,197,94,0.08)', border: '1px solid rgba(34,197,94,0.3)' }}>
       <div style={{ width: 7, height: 7, borderRadius: '50%', background: '#22c55e', boxShadow: '0 0 8px #22c55e', animation: 'mpmPulse 2s ease-in-out infinite' }} />
-      <span style={{ fontFamily: 'var(--font-display)', fontSize: 9, letterSpacing: '0.2em', color: '#9ff0bc' }}>LIVE · SYNCED {label.toUpperCase()}</span>
+      <span style={{ fontFamily: 'var(--font-display)', fontSize: 12, letterSpacing: '0.2em', color: '#9ff0bc' }}>LIVE · SYNCED {label.toUpperCase()}</span>
       <style>{'@keyframes mpmPulse { 0%,100%{opacity:1} 50%{opacity:0.4} }'}</style>
     </div>
   )
@@ -127,7 +127,7 @@ function StatCard({ label, value, icon, sub, accent }) {
     <div style={{ position: 'relative', padding: '28px 24px', background: 'rgba(8,15,23,0.85)', border: '1px solid ' + (accent || 'rgba(212,136,42,0.25)'), overflow: 'hidden' }}>
       <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: 'linear-gradient(90deg, transparent, ' + (accent || '#D4882A') + ', transparent)' }} />
       <div style={{ fontSize: 28, marginBottom: 8 }}>{icon}</div>
-      <div style={{ fontFamily: 'var(--font-display)', fontSize: 9, letterSpacing: '0.3em', color: 'rgba(212,136,42,0.65)', textTransform: 'uppercase', marginBottom: 8 }}>{label}</div>
+      <div style={{ fontFamily: 'var(--font-display)', fontSize: 12, letterSpacing: '0.3em', color: 'rgba(212,136,42,0.65)', textTransform: 'uppercase', marginBottom: 8 }}>{label}</div>
       <div style={{ fontFamily: 'var(--font-serif)', fontSize: 42, fontWeight: 700, color: 'var(--white)', lineHeight: 1 }}>{value !== undefined && value !== null ? value : '—'}</div>
       {sub && <div style={{ fontSize: 12, color: 'rgba(168,178,193,0.68)', marginTop: 8 }}>{sub}</div>}
     </div>
@@ -153,15 +153,15 @@ const S = {
   loginWrap: { minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24, background: '#060D14', position: 'relative', overflow: 'hidden' },
   loginCard: { position: 'relative', zIndex: 2, width: '100%', maxWidth: 420, border: '1px solid rgba(212,136,42,0.3)', background: 'rgba(8,15,23,0.97)', padding: '48px 40px' },
   input: { width: '100%', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(212,136,42,0.2)', color: 'var(--platinum)', fontFamily: 'var(--font-body)', fontSize: 14, padding: '14px 16px', outline: 'none', marginBottom: 16, boxSizing: 'border-box' },
-  btn: { width: '100%', padding: '16px', background: 'linear-gradient(135deg, #D4882A, #E8A855)', border: 'none', color: '#060D14', fontFamily: 'var(--font-display)', fontSize: 10, fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', cursor: 'pointer' },
+  btn: { width: '100%', padding: '16px', background: 'linear-gradient(135deg, #D4882A, #E8A855)', border: 'none', color: '#060D14', fontFamily: 'var(--font-display)', fontSize: 13, fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', cursor: 'pointer' },
   header: { borderBottom: '1px solid rgba(212,136,42,0.12)', padding: '18px 36px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'rgba(6,13,20,0.95)', position: 'sticky', top: 0, zIndex: 100 },
   tabs: { display: 'flex', padding: '0 36px', borderBottom: '1px solid rgba(212,136,42,0.1)', background: 'rgba(6,13,20,0.9)' },
-  tab: (active) => ({ padding: '16px 22px', fontFamily: 'var(--font-display)', fontSize: 9, fontWeight: 600, letterSpacing: '0.25em', textTransform: 'uppercase', color: active ? 'var(--gold)' : 'rgba(232,236,240,0.85)', cursor: 'pointer', background: 'none', border: 'none', borderBottom: active ? '2px solid var(--gold)' : '2px solid transparent', whiteSpace: 'nowrap', transition: 'color 0.15s' }),
+  tab: (active) => ({ padding: '16px 22px', fontFamily: 'var(--font-display)', fontSize: 13, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: active ? 'var(--gold)' : 'rgba(232,236,240,0.9)', cursor: 'pointer', background: 'none', border: 'none', borderBottom: active ? '2px solid var(--gold)' : '2px solid transparent', whiteSpace: 'nowrap', transition: 'color 0.15s' }),
   content: { padding: '40px 36px', maxWidth: 1300, margin: '0 auto' },
   table: { width: '100%', borderCollapse: 'collapse', fontSize: 13 },
-  th: { textAlign: 'left', padding: '12px 16px', fontFamily: 'var(--font-display)', fontSize: 9, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(212,136,42,0.6)', borderBottom: '1px solid rgba(212,136,42,0.15)' },
+  th: { textAlign: 'left', padding: '12px 16px', fontFamily: 'var(--font-display)', fontSize: 12, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(212,136,42,0.6)', borderBottom: '1px solid rgba(212,136,42,0.15)' },
   td: { padding: '16px', borderBottom: '1px solid rgba(212,136,42,0.06)', verticalAlign: 'top', lineHeight: 1.6 },
-  sectionTitle: { fontFamily: 'var(--font-display)', fontSize: 9, letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(212,136,42,0.6)', marginBottom: 24 },
+  sectionTitle: { fontFamily: 'var(--font-display)', fontSize: 12, letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(212,136,42,0.6)', marginBottom: 24 },
 }
 
 function AskDan() {
@@ -220,7 +220,7 @@ function AskDan() {
           <div key={i} style={{ display: 'flex', justifyContent: m.role === 'user' ? 'flex-end' : 'flex-start' }}>
             <div style={{ maxWidth: '78%', padding: '14px 18px', background: m.role === 'user' ? 'linear-gradient(135deg, #D4882A, #E8A855)' : 'rgba(255,255,255,0.04)', border: m.role === 'user' ? 'none' : '1px solid rgba(212,136,42,0.15)', color: m.role === 'user' ? '#060D14' : 'var(--platinum)', fontSize: 13, lineHeight: 1.6, fontWeight: m.role === 'user' ? 600 : 400 }}>
               {m.content}
-              {m.time && <div style={{ fontSize: 10, marginTop: 4, opacity: 0.35, textAlign: m.role === 'user' ? 'right' : 'left' }}>{m.time}</div>}
+              {m.time && <div style={{ fontSize: 13, marginTop: 4, opacity: 0.35, textAlign: m.role === 'user' ? 'right' : 'left' }}>{m.time}</div>}
             </div>
           </div>
         ))}
@@ -342,7 +342,7 @@ function BookingsCalendar() {
         <div style={{ border: '1px solid rgba(212,136,42,0.15)', background: 'rgba(8,15,23,0.7)', opacity: loading ? 0.6 : 1, transition: 'opacity 0.15s' }}>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)' }}>
             {WEEKDAYS.map(w => (
-              <div key={w} style={{ padding: '10px 0', textAlign: 'center', fontFamily: 'var(--font-display)', fontSize: 9, letterSpacing: '0.15em', color: 'rgba(212,136,42,0.55)', borderBottom: '1px solid rgba(212,136,42,0.12)' }}>{w}</div>
+              <div key={w} style={{ padding: '10px 0', textAlign: 'center', fontFamily: 'var(--font-display)', fontSize: 12, letterSpacing: '0.15em', color: 'rgba(212,136,42,0.55)', borderBottom: '1px solid rgba(212,136,42,0.12)' }}>{w}</div>
             ))}
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)' }}>
@@ -369,7 +369,7 @@ function BookingsCalendar() {
                       {dayEvents.slice(0, 3).map((ev, idx) => (
                         <div key={idx} style={{ width: 6, height: 6, borderRadius: '50%', background: '#D4882A', boxShadow: '0 0 5px #D4882A' }} />
                       ))}
-                      {dayEvents.length > 3 && <span style={{ fontSize: 9, color: 'rgba(212,136,42,0.7)' }}>+{dayEvents.length - 3}</span>}
+                      {dayEvents.length > 3 && <span style={{ fontSize: 12, color: 'rgba(212,136,42,0.7)' }}>+{dayEvents.length - 3}</span>}
                     </div>
                   )}
                 </div>
@@ -379,7 +379,7 @@ function BookingsCalendar() {
         </div>
 
         <div style={{ border: '1px solid rgba(212,136,42,0.15)', background: 'rgba(8,15,23,0.7)', padding: '20px 22px', minHeight: 200 }}>
-          <div style={{ fontFamily: 'var(--font-display)', fontSize: 9, letterSpacing: '0.2em', color: 'rgba(212,136,42,0.6)', marginBottom: 16 }}>
+          <div style={{ fontFamily: 'var(--font-display)', fontSize: 12, letterSpacing: '0.2em', color: 'rgba(212,136,42,0.6)', marginBottom: 16 }}>
             {selected.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' }).toUpperCase()}
           </div>
           {selectedEvents.length === 0 ? (
@@ -488,7 +488,7 @@ export default function Admin() {
         <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at center, rgba(212,136,42,0.06) 0%, transparent 70%)', zIndex: 1 }} />
         <form style={S.loginCard} onSubmit={login}>
           <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: 'linear-gradient(90deg, transparent, #D4882A, transparent)' }} />
-          <div style={{ fontFamily: 'var(--font-display)', fontSize: 10, letterSpacing: '0.3em', color: 'rgba(212,136,42,0.7)', marginBottom: 8 }}>MPM SYSTEMS</div>
+          <div style={{ fontFamily: 'var(--font-display)', fontSize: 13, letterSpacing: '0.3em', color: 'rgba(212,136,42,0.7)', marginBottom: 8 }}>MPM SYSTEMS</div>
           <div style={{ fontFamily: 'var(--font-serif)', fontSize: 28, fontWeight: 700, color: 'var(--white)', marginBottom: 8 }}>Command Center</div>
           <p style={{ fontSize: 13, color: 'rgba(168,178,193,0.68)', marginBottom: 36 }}>Restricted access. Authorized personnel only.</p>
           <input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Admin password" style={S.input} autoFocus />
@@ -509,7 +509,7 @@ export default function Admin() {
         <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
           <div style={{ width: 36, height: 36, background: 'linear-gradient(135deg, #D4882A, #E8A855)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'var(--font-display)', fontSize: 12, fontWeight: 700, color: '#060D14' }}>M</div>
           <div>
-            <div style={{ fontFamily: 'var(--font-display)', fontSize: 9, letterSpacing: '0.25em', color: 'rgba(212,136,42,0.7)' }}>MPM SYSTEMS</div>
+            <div style={{ fontFamily: 'var(--font-display)', fontSize: 12, letterSpacing: '0.25em', color: 'rgba(212,136,42,0.7)' }}>MPM SYSTEMS</div>
             <div style={{ fontFamily: 'var(--font-serif)', fontSize: 18, fontWeight: 700, color: 'var(--white)' }}>Command Center</div>
           </div>
         </div>
@@ -518,10 +518,10 @@ export default function Admin() {
           {todayLeads.length > 0 && (
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 14px', background: 'rgba(212,136,42,0.1)', border: '1px solid rgba(212,136,42,0.3)' }}>
               <div style={{ width: 7, height: 7, borderRadius: '50%', background: '#D4882A', boxShadow: '0 0 8px #D4882A' }} />
-              <span style={{ fontFamily: 'var(--font-display)', fontSize: 9, letterSpacing: '0.2em', color: 'var(--gold)' }}>{todayLeads.length} NEW TODAY</span>
+              <span style={{ fontFamily: 'var(--font-display)', fontSize: 12, letterSpacing: '0.2em', color: 'var(--gold)' }}>{todayLeads.length} NEW TODAY</span>
             </div>
           )}
-          <button onClick={logout} style={{ background: 'transparent', border: '1px solid rgba(212,136,42,0.25)', color: 'rgba(168,178,193,0.6)', fontFamily: 'var(--font-display)', fontSize: 9, letterSpacing: '0.2em', padding: '10px 18px', cursor: 'pointer' }}>Sign Out</button>
+          <button onClick={logout} style={{ background: 'transparent', border: '1px solid rgba(212,136,42,0.25)', color: 'rgba(168,178,193,0.6)', fontFamily: 'var(--font-display)', fontSize: 12, letterSpacing: '0.2em', padding: '10px 18px', cursor: 'pointer' }}>Sign Out</button>
         </div>
       </header>
       <nav style={S.tabs}>
@@ -591,7 +591,7 @@ export default function Admin() {
             <div>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20, gap: 20, flexWrap: 'wrap' }}>
                 <div style={S.sectionTitle}>All Leads</div>
-                <div style={{ fontFamily: 'var(--font-display)', fontSize: 9, letterSpacing: '0.2em', color: 'rgba(212,136,42,0.6)' }}>
+                <div style={{ fontFamily: 'var(--font-display)', fontSize: 12, letterSpacing: '0.2em', color: 'rgba(212,136,42,0.6)' }}>
                   {filtered.length}{filtered.length !== leads.length ? ` OF ${leads.length}` : ' TOTAL'}
                 </div>
               </div>
@@ -623,7 +623,7 @@ export default function Admin() {
                           <tr onClick={() => setExpandedLead(open ? null : l.id)} style={{ cursor: 'pointer' }}>
                             <td style={{ padding:'16px', borderBottom: open ? 'none' : '1px solid rgba(212,136,42,0.06)', color:'var(--white)', fontWeight:600 }}>
                               {l.name || '—'}
-                              {isToday(l) && <span style={{ marginLeft: 8, padding: '2px 8px', fontSize: 9, letterSpacing: '0.1em', background: 'rgba(212,136,42,0.15)', border: '1px solid rgba(212,136,42,0.35)', color: 'var(--gold)' }}>NEW</span>}
+                              {isToday(l) && <span style={{ marginLeft: 8, padding: '2px 8px', fontSize: 12, letterSpacing: '0.1em', background: 'rgba(212,136,42,0.15)', border: '1px solid rgba(212,136,42,0.35)', color: 'var(--gold)' }}>NEW</span>}
                             </td>
                             <td style={{ padding:'16px', borderBottom: open ? 'none' : '1px solid rgba(212,136,42,0.06)' }}>
                               <div style={{ color:'rgba(212,136,42,0.8)' }}>{l.email || '—'}</div>
@@ -661,7 +661,7 @@ export default function Admin() {
           <div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 28 }}>
               <div style={S.sectionTitle}>Chat Sessions</div>
-              <div style={{ fontFamily: 'var(--font-display)', fontSize: 9, letterSpacing: '0.2em', color: 'rgba(212,136,42,0.6)' }}>{chats.length} SESSIONS</div>
+              <div style={{ fontFamily: 'var(--font-display)', fontSize: 12, letterSpacing: '0.2em', color: 'rgba(212,136,42,0.6)' }}>{chats.length} SESSIONS</div>
             </div>
             {chats.length === 0 ? <p style={{ color: 'rgba(168,178,193,0.65)', fontSize: 13 }}>No chat logs yet.</p> : (
               <table style={S.table}>
@@ -723,7 +723,7 @@ export default function Admin() {
             {form && (
               <>
                 <div style={{ marginBottom: 20, padding: '24px 28px', background: 'rgba(8,15,23,0.8)', border: '1px solid rgba(212,136,42,0.15)', display: 'flex', flexDirection: 'column', gap: 16 }}>
-                  <div style={{ fontFamily: 'var(--font-display)', fontSize: 9, letterSpacing: '0.25em', color: 'rgba(212,136,42,0.5)' }}>Contact</div>
+                  <div style={{ fontFamily: 'var(--font-display)', fontSize: 12, letterSpacing: '0.25em', color: 'rgba(212,136,42,0.5)' }}>Contact</div>
                   <div>
                     <label style={{ fontSize: 11, color: 'rgba(168,178,193,0.72)', display: 'block', marginBottom: 6 }}>Contact Phone</label>
                     <input value={form.contact_phone || ''} onChange={e => setForm(f => ({ ...f, contact_phone: e.target.value }))} placeholder="(601) 531-8139" style={{ ...S.input, marginBottom: 0 }} />
@@ -743,7 +743,7 @@ export default function Admin() {
                 </div>
 
                 <div style={{ marginBottom: 20, padding: '24px 28px', background: 'rgba(8,15,23,0.8)', border: '1px solid rgba(212,136,42,0.15)', display: 'flex', flexDirection: 'column', gap: 20 }}>
-                  <div style={{ fontFamily: 'var(--font-display)', fontSize: 9, letterSpacing: '0.25em', color: 'rgba(212,136,42,0.5)' }}>Availability</div>
+                  <div style={{ fontFamily: 'var(--font-display)', fontSize: 12, letterSpacing: '0.25em', color: 'rgba(212,136,42,0.5)' }}>Availability</div>
                   <Toggle
                     label="Accepting New Leads"
                     sub="Turn off if you're at capacity — the site can reflect this."
@@ -769,7 +769,7 @@ export default function Admin() {
 
             <div style={S.sectionTitle}>System Configuration</div>
             <div style={{ marginBottom:32, padding:'20px 24px', background:'rgba(8,15,23,0.8)', border:'1px solid rgba(212,136,42,0.15)' }}>
-              <div style={{ fontFamily:'var(--font-display)', fontSize:9, letterSpacing:'0.25em', color:'rgba(212,136,42,0.5)', marginBottom:8 }}>Environment</div>
+              <div style={{ fontFamily:'var(--font-display)', fontSize: 12, letterSpacing:'0.25em', color:'rgba(212,136,42,0.5)', marginBottom:8 }}>Environment</div>
               <div style={{ fontSize:16, color:'var(--white)', fontWeight:600 }}>{settings?.environment || '—'}</div>
             </div>
             <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
