@@ -1,6 +1,20 @@
 import { verifyAdmin } from '../_lib/adminAuth.js'
 import { getUser, getScheduledEvents, getEventInvitees } from '../vapi/_calendly.js'
 
+// Test/junk bookings hidden from the admin dashboard — never shown, underlying
+// Calendly record is untouched. Match is loose (lowercase, spaces stripped)
+// so name-order or casing variations still get caught.
+const HIDDEN_MATCHES = ['thebiggest', 'aylaevans']
+
+function isHidden(ev, invitee) {
+  const blob = [ev.name, invitee?.name, invitee?.email]
+    .filter(Boolean)
+    .join(' ')
+    .toLowerCase()
+    .replace(/\s+/g, '')
+  return HIDDEN_MATCHES.some(m => blob.includes(m))
+}
+
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*')
   res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS')
@@ -24,7 +38,7 @@ export default async function handler(req, res) {
     const user = await getUser(token)
     const rawEvents = await getScheduledEvents(token, user.uri, minTime, maxTime)
 
-    const events = await Promise.all(rawEvents.map(async (ev) => {
+    const mapped = await Promise.all(rawEvents.map(async (ev) => {
       let invitee = null
       try {
         const invitees = await getEventInvitees(token, ev.uri)
@@ -32,6 +46,7 @@ export default async function handler(req, res) {
       } catch (e) {
         console.error('[admin/bookings invitees]', e.message)
       }
+      if (isHidden(ev, invitee)) return null
       return {
         id: ev.uri.split('/').pop(),
         name: ev.name,
@@ -44,6 +59,8 @@ export default async function handler(req, res) {
         cancelled: invitee?.status === 'canceled' || false,
       }
     }))
+
+    const events = mapped.filter(Boolean)
 
     return res.status(200).json({ events, configured: true })
   } catch (err) {
