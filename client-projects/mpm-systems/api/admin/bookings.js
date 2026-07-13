@@ -1,6 +1,6 @@
 import { verifyAdmin } from '../_lib/adminAuth.js'
 import { getSupabase } from '../_supabase.js'
-import { isSlotAvailable, SLOT_MINUTES } from '../_lib/availability.js'
+import { isSlotAvailable, getDaySchedule, SLOT_MINUTES } from '../_lib/availability.js'
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*')
@@ -14,6 +14,12 @@ export default async function handler(req, res) {
 
   if (req.method === 'GET') {
     try {
+      const { date } = req.query || {}
+      if (date) {
+        const schedule = await getDaySchedule(date)
+        return res.status(200).json({ schedule })
+      }
+
       const now = new Date()
       const { start, end } = req.query || {}
       const minTime = start ? new Date(start).toISOString() : new Date(now.getFullYear(), now.getMonth(), 1).toISOString()

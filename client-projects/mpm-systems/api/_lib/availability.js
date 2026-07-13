@@ -69,12 +69,11 @@ function overlapsAny(slotStart, slotEnd, ranges) {
   return ranges.some(r => slotStart < r.end && slotEnd > r.start)
 }
 
-// Generates all candidate slot start times (UTC Date objects) within [rangeStart, rangeEnd)
-// based on configured weekly hours, plus any one-off 'open' blocks, minus 'block' ranges.
-function generateCandidateSlots(rangeStart, rangeEnd, weeklyHours, blocks) {
+// Generates all slot start times (UTC Date objects) within [rangeStart, rangeEnd) based on
+// configured weekly hours plus any one-off 'open' blocks — does NOT remove 'block' ranges,
+// callers decide whether to filter or just tag them (see generateCandidateSlots vs getDaySchedule).
+function rawCandidateSlots(rangeStart, rangeEnd, weeklyHours, openRanges) {
   const slots = []
-  const blockRanges = blocks.filter(b => b.type === 'block')
-  const openRanges = blocks.filter(b => b.type === 'open')
   const byDay = new Map(weeklyHours.map(w => [w.day, w]))
 
   const get = (parts, t) => parts.find(p => p.type === t)?.value
@@ -112,15 +111,21 @@ function generateCandidateSlots(rangeStart, rangeEnd, weeklyHours, blocks) {
     }
   }
 
-  // Remove anything sitting inside a 'block' range, then de-dupe + sort.
-  const filtered = slots.filter(s => {
+  const seen = new Set()
+  return slots
+    .filter(s => { const k = s.getTime(); if (seen.has(k)) return false; seen.add(k); return true })
+    .sort((a, b) => a - b)
+}
+
+// Candidate slots with 'block' ranges removed entirely — used for actual availability checks.
+function generateCandidateSlots(rangeStart, rangeEnd, weeklyHours, blocks) {
+  const blockRanges = blocks.filter(b => b.type === 'block')
+  const openRanges = blocks.filter(b => b.type === 'open')
+  const raw = rawCandidateSlots(rangeStart, rangeEnd, weeklyHours, openRanges)
+  return raw.filter(s => {
     const slotEnd = new Date(s.getTime() + SLOT_MINUTES * 60000)
     return !overlapsAny(s, slotEnd, blockRanges)
   })
-  const seen = new Set()
-  return filtered
-    .filter(s => { const k = s.getTime(); if (seen.has(k)) return false; seen.add(k); return true })
-    .sort((a, b) => a - b)
 }
 
 // Returns all open (unbooked, in-hours, future) slots in [rangeStart, rangeEnd).
@@ -190,6 +195,49 @@ export async function isSlotAvailable(slotIso, durationMinutes = SLOT_MINUTES) {
     return { start: bStart, end: new Date(bStart.getTime() + (b.duration_minutes || SLOT_MINUTES) * 60000) }
   })
   return !overlapsAny(slot, slotEnd, bookedRanges)
+}
+
+// Full 30-min breakdown of a single civil date (YYYY-MM-DD, interpreted in Chicago time),
+// tagging every slot as open / booked / blocked — this is the admin day view, so unlike
+// getAvailableSlots it does NOT hide past or booked slots, it shows everything.
+export async function getDaySchedule(dateStr) {
+  const [y, m, d] = dateStr.split('-').map(n => parseInt(n, 10))
+  const dayStart = chicagoWallTimeToUTC(y, m, d, 0, 0)
+  const dayEnd = chicagoWallTimeToUTC(y, m, d + 1, 0, 0)
+
+  const sb = getSupabase()
+  const [weeklyHours, blocks, bookedResult] = await Promise.all([
+    loadWeeklyHours(),
+    loadBlocks(dayStart, dayEnd),
+    sb.from('mpm_appointments').select('*').neq('status', 'cancelled')
+      .gte('scheduled_at', dayStart.toISOString()).lt('scheduled_at', dayEnd.toISOString()),
+  ])
+  if (bookedResult.error) throw bookedResult.error
+
+  const openRanges = blocks.filter(b => b.type === 'open')
+  const blockRanges = blocks.filter(b => b.type === 'block')
+  const raw = rawCandidateSlots(dayStart, dayEnd, weeklyHours, openRanges)
+
+  const bookedList = (bookedResult.data || []).map(a => {
+    const start = new Date(a.scheduled_at)
+    return { start, end: new Date(start.getTime() + (a.duration_minutes || SLOT_MINUTES) * 60000), appt: a }
+  })
+
+  return raw.map(slotStart => {
+    const slotEnd = new Date(slotStart.getTime() + SLOT_MINUTES * 60000)
+    const bookedHit = bookedList.find(b => slotStart < b.end && slotEnd > b.start)
+    const blockedHit = !bookedHit && blockRanges.find(b => slotStart < b.end && slotEnd > b.start)
+    return {
+      start: slotStart.toISOString(),
+      end: slotEnd.toISOString(),
+      status: bookedHit ? 'booked' : blockedHit ? 'blocked' : 'open',
+      appointment: bookedHit ? {
+        id: bookedHit.appt.id, name: bookedHit.appt.name, email: bookedHit.appt.email,
+        phone: bookedHit.appt.phone, status: bookedHit.appt.status,
+      } : null,
+      label: blockedHit ? blockedHit.label : null,
+    }
+  })
 }
 
 // Short, chat-friendly summary of upcoming open slots — queried fresh on every

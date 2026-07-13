@@ -422,12 +422,22 @@ function AvailabilityManager() {
   )
 }
 
+function toDateKey(d) {
+  const y = d.getFullYear()
+  const m = String(d.getMonth() + 1).padStart(2, '0')
+  const day = String(d.getDate()).padStart(2, '0')
+  return `${y}-${m}-${day}`
+}
+
 function BookingsCalendar() {
   const [cursor, setCursor] = useState(() => { const d = new Date(); d.setDate(1); d.setHours(0,0,0,0); return d })
   const [events, setEvents] = useState([])
   const [loading, setLoading] = useState(true)
   const [err, setErr] = useState(null)
   const [selected, setSelected] = useState(() => new Date())
+  const [daySchedule, setDaySchedule] = useState([])
+  const [dayLoading, setDayLoading] = useState(true)
+  const [dayErr, setDayErr] = useState('')
   const [showAddForm, setShowAddForm] = useState(false)
   const [addForm, setAddForm] = useState({ name: '', email: '', phone: '', businessType: '', when: '' })
   const [addSubmitting, setAddSubmitting] = useState(false)
@@ -462,6 +472,26 @@ function BookingsCalendar() {
     return () => { cancelled = true }
   }, [cursor])
 
+  const loadDay = () => {
+    setDayLoading(true)
+    setDayErr('')
+    return adminFetch(`/api/admin/bookings?date=${toDateKey(selected)}`)
+      .then(d => setDaySchedule(d.schedule || []))
+      .catch(e => setDayErr(e.message))
+      .finally(() => setDayLoading(false))
+  }
+
+  useEffect(() => {
+    let cancelled = false
+    setDayLoading(true)
+    setDayErr('')
+    adminFetch(`/api/admin/bookings?date=${toDateKey(selected)}`)
+      .then(d => { if (!cancelled) setDaySchedule(d.schedule || []) })
+      .catch(e => { if (!cancelled) setDayErr(e.message) })
+      .finally(() => { if (!cancelled) setDayLoading(false) })
+    return () => { cancelled = true }
+  }, [selected])
+
   const submitAdd = async () => {
     setAddError('')
     if (!addForm.name.trim() || !addForm.when) { setAddError('Name and a time are required.'); return }
@@ -477,7 +507,7 @@ function BookingsCalendar() {
       })
       setAddForm({ name: '', email: '', phone: '', businessType: '', when: '' })
       setShowAddForm(false)
-      await load()
+      await Promise.all([load(), loadDay()])
     } catch (e) {
       setAddError(e.message)
     } finally {
@@ -491,7 +521,7 @@ function BookingsCalendar() {
     try {
       await adminFetch('/api/admin/bookings', { method: 'PATCH', body: JSON.stringify({ id, action, ...extra }) })
       setReschedulingId(null)
-      await load()
+      await Promise.all([load(), loadDay()])
     } catch (e) {
       setActionError(e.message)
     } finally {
@@ -605,37 +635,62 @@ function BookingsCalendar() {
           <div style={{ fontFamily: 'var(--font-display)', fontSize: 12, letterSpacing: '0.2em', color: 'rgba(212,136,42,0.6)', marginBottom: 16 }}>
             {selected.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' }).toUpperCase()}
           </div>
-          {selectedEvents.length === 0 ? (
-            <p style={{ fontSize: 13, color: 'rgba(168,178,193,0.6)' }}>No calls booked this day.</p>
+          {dayErr && (
+            <div style={{ marginBottom: 12, fontSize: 12, color: '#f87171' }}>{dayErr}</div>
+          )}
+          {dayLoading ? (
+            <p style={{ fontSize: 13, color: 'rgba(168,178,193,0.6)' }}>Loading schedule…</p>
+          ) : daySchedule.length === 0 ? (
+            <p style={{ fontSize: 13, color: 'rgba(168,178,193,0.6)' }}>No availability configured for this day.</p>
           ) : (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-              {selectedEvents.map(ev => {
-                const busy = actionBusyId === ev.id
-                const isRescheduling = reschedulingId === ev.id
-                return (
-                  <div key={ev.id} style={{ padding: '12px 14px', borderLeft: '2px solid #D4882A', background: 'rgba(212,136,42,0.05)', opacity: ev.status === 'cancelled' ? 0.45 : 1 }}>
-                    <div style={{ fontSize: 13, color: 'var(--white)', fontWeight: 600 }}>{timeStr(ev.start_time)} – {timeStr(ev.end_time)}</div>
-                    <div style={{ fontSize: 13, color: 'rgba(232,236,240,0.85)', marginTop: 4 }}>{ev.invitee_name || ev.name || 'Booked call'}</div>
-                    {ev.invitee_email && <div style={{ fontSize: 11, color: 'rgba(212,136,42,0.75)', marginTop: 2 }}>{ev.invitee_email}</div>}
-                    {ev.status && ev.status !== 'scheduled' && (
-                      <div style={{ fontSize: 10, letterSpacing: '0.1em', color: 'rgba(232,168,85,0.9)', marginTop: 4, textTransform: 'uppercase' }}>{ev.status.replace('_', ' ')}</div>
-                    )}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8, maxHeight: 560, overflowY: 'auto' }}>
+              {daySchedule.map(slot => {
+                const appt = slot.appointment
+                const busy = appt && actionBusyId === appt.id
+                const isRescheduling = appt && reschedulingId === appt.id
 
-                    {isRescheduling ? (
-                      <div style={{ marginTop: 10, display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
-                        <input type="datetime-local" value={rescheduleValue} onChange={e => setRescheduleValue(e.target.value)} style={{ ...S.input, marginBottom: 0, width: 'auto' }} />
-                        <button disabled={busy} onClick={() => runAction(ev.id, 'reschedule', { scheduledAt: new Date(rescheduleValue).toISOString() })} style={{ fontSize: 11, padding: '8px 12px', background: 'var(--gold)', color: '#060D14', border: 'none', cursor: 'pointer' }}>Save</button>
-                        <button disabled={busy} onClick={() => setReschedulingId(null)} style={{ fontSize: 11, padding: '8px 12px', background: 'transparent', border: '1px solid rgba(212,136,42,0.3)', color: 'rgba(232,236,240,0.8)', cursor: 'pointer' }}>Cancel</button>
-                      </div>
-                    ) : (
-                      ev.status !== 'cancelled' && (
-                        <div style={{ marginTop: 10, display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-                          <button disabled={busy} onClick={() => { setReschedulingId(ev.id); setRescheduleValue('') }} style={{ fontSize: 11, padding: '6px 10px', background: 'transparent', border: '1px solid rgba(212,136,42,0.3)', color: 'var(--gold)', cursor: 'pointer' }}>Reschedule</button>
-                          <button disabled={busy} onClick={() => runAction(ev.id, 'complete')} style={{ fontSize: 11, padding: '6px 10px', background: 'transparent', border: '1px solid rgba(34,197,94,0.35)', color: '#4ade80', cursor: 'pointer' }}>Complete</button>
-                          <button disabled={busy} onClick={() => runAction(ev.id, 'cancel')} style={{ fontSize: 11, padding: '6px 10px', background: 'transparent', border: '1px solid rgba(248,113,113,0.35)', color: '#f87171', cursor: 'pointer' }}>Cancel</button>
+                if (slot.status === 'booked' && appt) {
+                  return (
+                    <div key={slot.start} style={{ padding: '10px 12px', borderLeft: '2px solid #D4882A', background: 'rgba(212,136,42,0.08)', opacity: appt.status === 'cancelled' ? 0.45 : 1 }}>
+                      <div style={{ fontSize: 12, color: 'var(--white)', fontWeight: 600 }}>{timeStr(slot.start)} – {timeStr(slot.end)}</div>
+                      <div style={{ fontSize: 12, color: 'rgba(232,236,240,0.85)', marginTop: 2 }}>{appt.name || 'Booked call'}</div>
+                      {appt.email && <div style={{ fontSize: 10, color: 'rgba(212,136,42,0.75)', marginTop: 2 }}>{appt.email}</div>}
+                      {appt.status && appt.status !== 'scheduled' && (
+                        <div style={{ fontSize: 10, letterSpacing: '0.1em', color: 'rgba(232,168,85,0.9)', marginTop: 4, textTransform: 'uppercase' }}>{appt.status.replace('_', ' ')}</div>
+                      )}
+
+                      {isRescheduling ? (
+                        <div style={{ marginTop: 8, display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
+                          <input type="datetime-local" value={rescheduleValue} onChange={e => setRescheduleValue(e.target.value)} style={{ ...S.input, marginBottom: 0, width: 'auto' }} />
+                          <button disabled={busy} onClick={() => runAction(appt.id, 'reschedule', { scheduledAt: new Date(rescheduleValue).toISOString() })} style={{ fontSize: 11, padding: '8px 12px', background: 'var(--gold)', color: '#060D14', border: 'none', cursor: 'pointer' }}>Save</button>
+                          <button disabled={busy} onClick={() => setReschedulingId(null)} style={{ fontSize: 11, padding: '8px 12px', background: 'transparent', border: '1px solid rgba(212,136,42,0.3)', color: 'rgba(232,236,240,0.8)', cursor: 'pointer' }}>Cancel</button>
                         </div>
-                      )
-                    )}
+                      ) : (
+                        appt.status !== 'cancelled' && (
+                          <div style={{ marginTop: 8, display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                            <button disabled={busy} onClick={() => { setReschedulingId(appt.id); setRescheduleValue('') }} style={{ fontSize: 11, padding: '6px 10px', background: 'transparent', border: '1px solid rgba(212,136,42,0.3)', color: 'var(--gold)', cursor: 'pointer' }}>Reschedule</button>
+                            <button disabled={busy} onClick={() => runAction(appt.id, 'complete')} style={{ fontSize: 11, padding: '6px 10px', background: 'transparent', border: '1px solid rgba(34,197,94,0.35)', color: '#4ade80', cursor: 'pointer' }}>Complete</button>
+                            <button disabled={busy} onClick={() => runAction(appt.id, 'cancel')} style={{ fontSize: 11, padding: '6px 10px', background: 'transparent', border: '1px solid rgba(248,113,113,0.35)', color: '#f87171', cursor: 'pointer' }}>Cancel</button>
+                          </div>
+                        )
+                      )}
+                    </div>
+                  )
+                }
+
+                if (slot.status === 'blocked') {
+                  return (
+                    <div key={slot.start} style={{ padding: '8px 12px', borderLeft: '2px solid rgba(168,178,193,0.35)', background: 'rgba(168,178,193,0.05)' }}>
+                      <div style={{ fontSize: 12, color: 'rgba(232,236,240,0.7)' }}>{timeStr(slot.start)} – {timeStr(slot.end)}</div>
+                      <div style={{ fontSize: 11, color: 'rgba(168,178,193,0.6)', marginTop: 2, textTransform: 'uppercase', letterSpacing: '0.08em' }}>{slot.label || 'Blocked'}</div>
+                    </div>
+                  )
+                }
+
+                return (
+                  <div key={slot.start} style={{ padding: '8px 12px', borderLeft: '2px solid rgba(74,222,128,0.3)', background: 'rgba(74,222,128,0.04)' }}>
+                    <div style={{ fontSize: 12, color: 'rgba(232,236,240,0.55)' }}>{timeStr(slot.start)} – {timeStr(slot.end)}</div>
+                    <div style={{ fontSize: 10, letterSpacing: '0.1em', color: 'rgba(74,222,128,0.7)', marginTop: 2, textTransform: 'uppercase' }}>Open</div>
                   </div>
                 )
               })}
