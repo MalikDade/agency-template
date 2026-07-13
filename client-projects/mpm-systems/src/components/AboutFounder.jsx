@@ -11,17 +11,17 @@ export default function AboutFounder() {
         <div className="reveal" style={{ textAlign: 'center', marginBottom: 56 }}>
           <p className="label" style={{ marginBottom: 20 }}>About Making Power Moves</p>
 
-          {/* Avatar placeholder — swap for a real photo when ready */}
+          {/* Malik's photo */}
           <div
             style={{
               width: 128, height: 128, margin: '0 auto 28px',
               borderRadius: '50%',
               border: '1px solid rgba(212,136,42,0.5)',
               background: 'rgba(212,136,42,0.08)',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              overflow: 'hidden',
             }}
           >
-            <span style={{ fontFamily: 'var(--font-display)', fontSize: 36, fontWeight: 700, color: 'var(--gold)' }}>MD</span>
+            <img src="/malik-office.jpg" alt="Malik Dade" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top center' }} />
           </div>
 
           <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 'clamp(30px, 4.5vw, 46px)', fontWeight: 900, color: 'var(--white)', lineHeight: 1.1, marginBottom: 10 }}>

@@ -1,4 +1,11 @@
 import { Link } from 'react-router-dom'
+import SlideshowBg from './SlideshowBg'
+
+const IMAGES = [
+  'https://images.unsplash.com/photo-1497366216548-37526070297c?w=1400&q=80&fit=crop',
+  'https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=1400&q=80&fit=crop',
+  'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=1400&q=80&fit=crop',
+]
 
 export default function FounderTeaser() {
   return (
@@ -10,7 +17,6 @@ export default function FounderTeaser() {
           margin: '0 auto',
           padding: '48px 56px',
           border: '1px solid rgba(212,136,42,0.2)',
-          background: 'linear-gradient(135deg, rgba(212,136,42,0.05) 0%, rgba(212,136,42,0.01) 100%)',
           display: 'flex',
           alignItems: 'center',
           gap: 36,
@@ -19,20 +25,21 @@ export default function FounderTeaser() {
           overflow: 'hidden',
         }}
       >
-        <div style={{ position: 'absolute', left: -80, top: '50%', transform: 'translateY(-50%)', width: 280, height: 280, background: 'radial-gradient(circle, rgba(212,136,42,0.06) 0%, transparent 70%)', pointerEvents: 'none' }} />
+        <SlideshowBg images={IMAGES} overlay="linear-gradient(135deg, rgba(8,15,23,0.93) 0%, rgba(8,15,23,0.86) 50%, rgba(212,136,42,0.07) 100%)" />
+        <div style={{ position: 'absolute', left: -80, top: '50%', transform: 'translateY(-50%)', width: 280, height: 280, background: 'radial-gradient(circle, rgba(212,136,42,0.1) 0%, transparent 70%)', pointerEvents: 'none' }} />
 
-        {/* Avatar placeholder — swap for a real photo when ready */}
+        {/* Malik's photo */}
         <div
           style={{
             width: 84, height: 84, flexShrink: 0,
             borderRadius: '50%',
             border: '1px solid rgba(212,136,42,0.5)',
             background: 'rgba(212,136,42,0.08)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            overflow: 'hidden',
             position: 'relative', zIndex: 1,
           }}
         >
-          <span style={{ fontFamily: 'var(--font-display)', fontSize: 24, fontWeight: 700, color: 'var(--gold)' }}>MD</span>
+          <img src="/malik-office.jpg" alt="Malik Dade" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top center' }} />
         </div>
 
         <div style={{ flex: 1, minWidth: 260, position: 'relative', zIndex: 1 }}>
