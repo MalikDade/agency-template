@@ -16,6 +16,7 @@ import PricingPage from './pages/Pricing'
 import CaseStudyPage from './pages/CaseStudy'
 import WhyUsPage from './pages/WhyUs'
 import BookPage from './pages/Book'
+import AboutPage from './pages/About'
 import Admin from './pages/Admin'
 
 function AnimatedRoutes({ onStartTour }) {
@@ -29,6 +30,7 @@ function AnimatedRoutes({ onStartTour }) {
         <Route path="/case-study" element={<PageTransition><CaseStudyPage /></PageTransition>} />
         <Route path="/why-us" element={<PageTransition><WhyUsPage /></PageTransition>} />
         <Route path="/book" element={<PageTransition><BookPage /></PageTransition>} />
+        <Route path="/about" element={<PageTransition><AboutPage /></PageTransition>} />
       </Routes>
     </AnimatePresence>
   )

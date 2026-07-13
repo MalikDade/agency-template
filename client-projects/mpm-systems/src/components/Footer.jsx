@@ -23,6 +23,7 @@ const COLS = [
   {
     heading: 'Company',
     links: [
+      ['About Malik',             '/about'],
       ['Case Study',              '/case-study'],
       ['Why MPM Systems',         '/why-us'],
       ['Book a Call',             '/book'],

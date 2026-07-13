@@ -7,6 +7,7 @@ const LINKS = [
   { label: 'Pricing',     to: '/pricing' },
   { label: 'Case Study',  to: '/case-study' },
   { label: 'Why Us',      to: '/why-us' },
+  { label: 'About',       to: '/about' },
 ]
 
 const linkBase = {
