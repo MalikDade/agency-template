@@ -1,7 +1,5 @@
-import { useEffect } from 'react'
 import SlideshowBg from './SlideshowBg'
-
-const CALENDLY_URL = 'https://calendly.com/malikdade20?background_color=0d1b2a&text_color=ffffff&primary_color=d4882a&hide_gdpr_banner=1'
+import BookingWidget from './BookingWidget'
 
 const IMAGES = [
   'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=1400&q=80&fit=crop',
@@ -12,13 +10,6 @@ const IMAGES = [
 ]
 
 export default function Contact() {
-  useEffect(() => {
-    if (document.querySelector('script[src*="calendly"]')) return
-    const script = document.createElement('script')
-    script.src = 'https://assets.calendly.com/assets/external/widget.js'
-    script.async = true
-    document.head.appendChild(script)
-  }, [])
 
   const labelStyle = {
     fontFamily: 'var(--font-display)',
@@ -91,28 +82,9 @@ export default function Contact() {
             <div style={{ marginTop: 48, width: 80, height: 2, background: 'linear-gradient(90deg, var(--gold), transparent)' }} />
           </div>
 
-          {/* Right: Calendly Embed */}
+          {/* Right: Native booking widget */}
           <div className="reveal-right" style={{ transitionDelay: '0.15s' }}>
-            <div style={{
-              border: '1px solid rgba(212,136,42,0.22)',
-              background: 'rgba(8,15,23,0.7)',
-              overflow: 'hidden',
-              position: 'relative',
-            }}>
-              {/* Top gold accent bar */}
-              <div style={{ height: 2, background: 'linear-gradient(90deg, var(--gold), rgba(212,136,42,0.3), transparent)' }} />
-
-              {/* Corner accent — top right */}
-              <div style={{ position: 'absolute', top: 2, right: 0, width: 64, height: 1, background: 'linear-gradient(270deg, rgba(212,136,42,0.25), transparent)', pointerEvents: 'none' }} />
-              {/* Corner accent — bottom left */}
-              <div style={{ position: 'absolute', bottom: 0, left: 0, width: 64, height: 1, background: 'linear-gradient(90deg, rgba(212,136,42,0.2), transparent)', pointerEvents: 'none' }} />
-
-              <div
-                className="calendly-inline-widget"
-                data-url={CALENDLY_URL}
-                style={{ minWidth: 280, height: 660 }}
-              />
-            </div>
+            <BookingWidget />
 
             <p style={{ textAlign: 'center', marginTop: 16, fontSize: 10, color: 'rgba(168,178,193,0.72)', fontFamily: 'var(--font-display)', letterSpacing: '0.2em' }}>
               NO SPAM. NO PRESSURE. JUST A CONVERSATION.

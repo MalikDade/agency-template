@@ -1,4 +1,5 @@
 import { supabaseRequest } from '../_lib/supabase.js'
+import { getAvailabilitySummary } from '../_lib/availability.js'
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*')
@@ -18,13 +19,17 @@ export default async function handler(req, res) {
   if (req.method === 'POST') {
     const { message } = req.body || {}
     if (!message) return res.status(400).json({ error: 'No message' })
-    const [historyData, leadsData] = await Promise.all([
+    const [historyData, leadsData, avail] = await Promise.all([
       supabaseRequest('mpm_admin_chats', { method: 'GET', query: '?session_id=eq.malik-admin-session&order=created_at.asc&limit=20' }).catch(() => []),
       supabaseRequest('mpm_leads', { method: 'GET', query: '?order=created_at.desc&limit=20' }).catch(() => []),
+      getAvailabilitySummary(7, 6).catch(() => ({ count: 0, next: [] })),
     ])
     const leads = leadsData || []
     const history = historyData || []
-    const sys = 'You are Dan Carter at MPM Systems talking to Malik Dade the founder. Never pitch calls to Malik. Be direct. Total Leads: ' + leads.length + '. Leads: ' + leads.slice(0,5).map(function(l){return (l.name||'Unknown')+' '+l.email}).join(', ')
+    const availText = avail.count > 0
+      ? avail.next.join(', ') + (avail.count > avail.next.length ? ', and more after that' : '')
+      : 'no open slots in the next 7 days'
+    const sys = 'You are Dan Carter at MPM Systems talking to Malik Dade the founder. Never pitch calls to Malik. Be direct. Total Leads: ' + leads.length + '. Leads: ' + leads.slice(0,5).map(function(l){return (l.name||'Unknown')+' '+l.email}).join(', ') + '. Live open booking slots (next 7 days, refreshed every message): ' + availText + '.'
     const msgs = history.map(function(m){return{role:m.role,content:m.content}})
     msgs.push({role:'user',content:message})
     const r = await fetch('https://api.anthropic.com/v1/messages', {

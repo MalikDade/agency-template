@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef, Fragment } from 'react'
-import CalendlyEmbed from '../components/CalendlyEmbed'
 import SlideshowBg from '../components/SlideshowBg'
 
 const HERO_IMAGES = [
@@ -266,15 +265,189 @@ function Toggle({ label, checked, onChange, sub }) {
 }
 
 const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+const HOUR_OPTIONS = Array.from({ length: 17 }, (_, i) => i + 6) // 6am..22 (10pm)
+
+function formatHour(h) {
+  const hh = h % 24
+  const period = hh < 12 ? 'AM' : 'PM'
+  const disp = hh % 12 === 0 ? 12 : hh % 12
+  return `${disp}:00 ${period}`
+}
+
+function AvailabilityManager() {
+  const [loading, setLoading] = useState(true)
+  const [loadErr, setLoadErr] = useState('')
+  const [weeklyHours, setWeeklyHours] = useState(null)
+  const [savingHours, setSavingHours] = useState(false)
+  const [hoursMsg, setHoursMsg] = useState('')
+  const [blocks, setBlocks] = useState([])
+  const [blockForm, setBlockForm] = useState({ type: 'block', start: '', end: '', label: '' })
+  const [addingBlock, setAddingBlock] = useState(false)
+  const [blockError, setBlockError] = useState('')
+  const [removingId, setRemovingId] = useState(null)
+
+  const load = () => {
+    setLoading(true)
+    setLoadErr('')
+    return adminFetch('/api/admin/availability')
+      .then(d => { setWeeklyHours(d.weeklyHours); setBlocks(d.blocks || []) })
+      .catch(e => setLoadErr(e.message))
+      .finally(() => setLoading(false))
+  }
+
+  useEffect(() => { load() }, [])
+
+  const saveHours = async () => {
+    setSavingHours(true)
+    setHoursMsg('')
+    try {
+      await adminFetch('/api/admin/availability', { method: 'PATCH', body: JSON.stringify({ weeklyHours }) })
+      setHoursMsg('Saved ✓')
+      setTimeout(() => setHoursMsg(''), 3000)
+    } catch (e) {
+      setHoursMsg('Failed: ' + e.message)
+    } finally {
+      setSavingHours(false)
+    }
+  }
+
+  const addBlock = async () => {
+    setBlockError('')
+    if (!blockForm.start || !blockForm.end) { setBlockError('Start and end are required.'); return }
+    setAddingBlock(true)
+    try {
+      await adminFetch('/api/admin/availability', {
+        method: 'POST',
+        body: JSON.stringify({
+          type: blockForm.type,
+          startTime: new Date(blockForm.start).toISOString(),
+          endTime: new Date(blockForm.end).toISOString(),
+          label: blockForm.label || undefined,
+        }),
+      })
+      setBlockForm({ type: 'block', start: '', end: '', label: '' })
+      await load()
+    } catch (e) {
+      setBlockError(e.message)
+    } finally {
+      setAddingBlock(false)
+    }
+  }
+
+  const removeBlock = async (id) => {
+    setRemovingId(id)
+    try {
+      await adminFetch(`/api/admin/availability?id=${encodeURIComponent(id)}`, { method: 'DELETE' })
+      await load()
+    } catch (e) {
+      setBlockError(e.message)
+    } finally {
+      setRemovingId(null)
+    }
+  }
+
+  if (loading) return <p style={{ fontSize: 13, color: 'rgba(168,178,193,0.65)' }}>Loading availability…</p>
+  if (loadErr) return <p style={{ fontSize: 13, color: '#f87171' }}>{loadErr}</p>
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 20, marginBottom: 28 }}>
+      <div style={{ padding: '20px 22px', border: '1px solid rgba(212,136,42,0.2)', background: 'rgba(8,15,23,0.7)' }}>
+        <div style={{ fontFamily: 'var(--font-display)', fontSize: 11, letterSpacing: '0.2em', color: 'rgba(232,168,85,0.9)', marginBottom: 14, textTransform: 'uppercase' }}>Weekly Hours</div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+          {weeklyHours.map((w, i) => (
+            <div key={w.day} style={{ display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap' }}>
+              <div style={{ width: 90 }}>
+                <Toggle
+                  label={WEEKDAYS[w.day]}
+                  checked={w.enabled}
+                  onChange={v => setWeeklyHours(hrs => hrs.map((h, idx) => idx === i ? { ...h, enabled: v } : h))}
+                />
+              </div>
+              {w.enabled && (
+                <>
+                  <select value={w.start} onChange={e => setWeeklyHours(hrs => hrs.map((h, idx) => idx === i ? { ...h, start: parseInt(e.target.value, 10) } : h))} style={{ ...S.input, marginBottom: 0, width: 'auto', padding: '8px 10px' }}>
+                    {HOUR_OPTIONS.map(h => <option key={h} value={h}>{formatHour(h)}</option>)}
+                  </select>
+                  <span style={{ color: 'rgba(168,178,193,0.6)', fontSize: 12 }}>to</span>
+                  <select value={w.end} onChange={e => setWeeklyHours(hrs => hrs.map((h, idx) => idx === i ? { ...h, end: parseInt(e.target.value, 10) } : h))} style={{ ...S.input, marginBottom: 0, width: 'auto', padding: '8px 10px' }}>
+                    {HOUR_OPTIONS.map(h => <option key={h} value={h}>{formatHour(h)}</option>)}
+                  </select>
+                </>
+              )}
+            </div>
+          ))}
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginTop: 16 }}>
+          <button onClick={saveHours} disabled={savingHours} style={{ ...S.btn, width: 'auto', padding: '12px 20px', opacity: savingHours ? 0.6 : 1 }}>
+            {savingHours ? 'Saving…' : 'Save Weekly Hours'}
+          </button>
+          {hoursMsg && <span style={{ fontSize: 12, color: hoursMsg.startsWith('Failed') ? '#f87171' : '#22c55e' }}>{hoursMsg}</span>}
+        </div>
+      </div>
+
+      <div style={{ padding: '20px 22px', border: '1px solid rgba(212,136,42,0.2)', background: 'rgba(8,15,23,0.7)' }}>
+        <div style={{ fontFamily: 'var(--font-display)', fontSize: 11, letterSpacing: '0.2em', color: 'rgba(232,168,85,0.9)', marginBottom: 14, textTransform: 'uppercase' }}>Blocked / Extra Open Times</div>
+
+        {blocks.length === 0 ? (
+          <p style={{ fontSize: 13, color: 'rgba(168,178,193,0.6)', marginBottom: 16 }}>No upcoming blocks or extra-open windows.</p>
+        ) : (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 20 }}>
+            {blocks.map(b => (
+              <div key={b.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 14px', border: `1px solid ${b.type === 'block' ? 'rgba(248,113,113,0.3)' : 'rgba(34,197,94,0.3)'}`, background: b.type === 'block' ? 'rgba(248,113,113,0.05)' : 'rgba(34,197,94,0.05)', flexWrap: 'wrap', gap: 8 }}>
+                <div style={{ fontSize: 12, color: 'rgba(232,236,240,0.85)' }}>
+                  <span style={{ color: b.type === 'block' ? '#f87171' : '#4ade80', fontWeight: 600, textTransform: 'uppercase', fontSize: 10, letterSpacing: '0.1em', marginRight: 8 }}>{b.type === 'block' ? 'Blocked' : 'Open'}</span>
+                  {new Date(b.start_time).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' })} – {new Date(b.end_time).toLocaleString('en-US', { hour: 'numeric', minute: '2-digit' })}
+                  {b.label && <span style={{ color: 'rgba(168,178,193,0.65)', marginLeft: 8 }}>· {b.label}</span>}
+                </div>
+                <button disabled={removingId === b.id} onClick={() => removeBlock(b.id)} style={{ fontSize: 11, padding: '5px 10px', background: 'transparent', border: '1px solid rgba(212,136,42,0.3)', color: 'rgba(232,236,240,0.75)', cursor: 'pointer' }}>Remove</button>
+              </div>
+            ))}
+          </div>
+        )}
+
+        <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', alignItems: 'center' }}>
+          <select value={blockForm.type} onChange={e => setBlockForm(f => ({ ...f, type: e.target.value }))} style={{ ...S.input, marginBottom: 0, width: 'auto', padding: '10px 12px' }}>
+            <option value="block">Block time off</option>
+            <option value="open">Open extra time</option>
+          </select>
+          <input type="datetime-local" value={blockForm.start} onChange={e => setBlockForm(f => ({ ...f, start: e.target.value }))} style={{ ...S.input, marginBottom: 0, width: 'auto' }} />
+          <span style={{ color: 'rgba(168,178,193,0.6)', fontSize: 12 }}>to</span>
+          <input type="datetime-local" value={blockForm.end} onChange={e => setBlockForm(f => ({ ...f, end: e.target.value }))} style={{ ...S.input, marginBottom: 0, width: 'auto' }} />
+          <input placeholder="Label (optional)" value={blockForm.label} onChange={e => setBlockForm(f => ({ ...f, label: e.target.value }))} style={{ ...S.input, marginBottom: 0, width: 160 }} />
+          <button onClick={addBlock} disabled={addingBlock} style={{ ...S.btn, width: 'auto', padding: '10px 18px', opacity: addingBlock ? 0.6 : 1 }}>{addingBlock ? 'Adding…' : 'Add'}</button>
+        </div>
+        {blockError && <div style={{ fontSize: 12, color: '#f87171', marginTop: 10 }}>{blockError}</div>}
+      </div>
+    </div>
+  )
+}
 
 function BookingsCalendar() {
   const [cursor, setCursor] = useState(() => { const d = new Date(); d.setDate(1); d.setHours(0,0,0,0); return d })
   const [events, setEvents] = useState([])
   const [loading, setLoading] = useState(true)
   const [err, setErr] = useState(null)
-  const [configured, setConfigured] = useState(true)
   const [selected, setSelected] = useState(() => new Date())
-  const [showEmbed, setShowEmbed] = useState(false)
+  const [showAddForm, setShowAddForm] = useState(false)
+  const [addForm, setAddForm] = useState({ name: '', email: '', phone: '', businessType: '', when: '' })
+  const [addSubmitting, setAddSubmitting] = useState(false)
+  const [addError, setAddError] = useState('')
+  const [reschedulingId, setReschedulingId] = useState(null)
+  const [rescheduleValue, setRescheduleValue] = useState('')
+  const [actionBusyId, setActionBusyId] = useState(null)
+  const [actionError, setActionError] = useState('')
+  const [showAvailability, setShowAvailability] = useState(false)
+
+  const load = () => {
+    setLoading(true)
+    setErr(null)
+    const start = new Date(cursor.getFullYear(), cursor.getMonth(), 1)
+    const end = new Date(cursor.getFullYear(), cursor.getMonth() + 1, 1)
+    return adminFetch(`/api/admin/bookings?start=${encodeURIComponent(start.toISOString())}&end=${encodeURIComponent(end.toISOString())}`)
+      .then(d => setEvents(d.events || []))
+      .catch(e => setErr(e.message))
+      .finally(() => setLoading(false))
+  }
 
   useEffect(() => {
     let cancelled = false
@@ -283,15 +456,48 @@ function BookingsCalendar() {
     const start = new Date(cursor.getFullYear(), cursor.getMonth(), 1)
     const end = new Date(cursor.getFullYear(), cursor.getMonth() + 1, 1)
     adminFetch(`/api/admin/bookings?start=${encodeURIComponent(start.toISOString())}&end=${encodeURIComponent(end.toISOString())}`)
-      .then(d => {
-        if (cancelled) return
-        setEvents(d.events || [])
-        setConfigured(d.configured !== false)
-      })
+      .then(d => { if (!cancelled) setEvents(d.events || []) })
       .catch(e => { if (!cancelled) setErr(e.message) })
       .finally(() => { if (!cancelled) setLoading(false) })
     return () => { cancelled = true }
   }, [cursor])
+
+  const submitAdd = async () => {
+    setAddError('')
+    if (!addForm.name.trim() || !addForm.when) { setAddError('Name and a time are required.'); return }
+    setAddSubmitting(true)
+    try {
+      await adminFetch('/api/admin/bookings', {
+        method: 'POST',
+        body: JSON.stringify({
+          name: addForm.name, email: addForm.email || undefined, phone: addForm.phone || undefined,
+          businessType: addForm.businessType || undefined,
+          scheduledAt: new Date(addForm.when).toISOString(),
+        }),
+      })
+      setAddForm({ name: '', email: '', phone: '', businessType: '', when: '' })
+      setShowAddForm(false)
+      await load()
+    } catch (e) {
+      setAddError(e.message)
+    } finally {
+      setAddSubmitting(false)
+    }
+  }
+
+  const runAction = async (id, action, extra = {}) => {
+    setActionBusyId(id)
+    setActionError('')
+    try {
+      await adminFetch('/api/admin/bookings', { method: 'PATCH', body: JSON.stringify({ id, action, ...extra }) })
+      setReschedulingId(null)
+      await load()
+    } catch (e) {
+      setActionError(e.message)
+    } finally {
+      setActionBusyId(null)
+    }
+  }
 
   const byDay = {}
   events.forEach(ev => {
@@ -318,23 +524,40 @@ function BookingsCalendar() {
           <div style={{ fontFamily: 'var(--font-serif)', fontSize: 18, fontWeight: 700, color: 'var(--white)', minWidth: 170, textAlign: 'center' }}>{monthLabel}</div>
           <button onClick={() => setCursor(c => new Date(c.getFullYear(), c.getMonth() + 1, 1))} style={{ background: 'transparent', border: '1px solid rgba(212,136,42,0.3)', color: 'var(--gold)', padding: '8px 14px', cursor: 'pointer', fontSize: 14 }}>→</button>
         </div>
-        <button onClick={() => setShowEmbed(s => !s)} style={{ ...S.btn, width: 'auto', padding: '12px 22px' }}>{showEmbed ? 'Hide Booking Widget' : '+ Book a Call'}</button>
+        <div style={{ display: 'flex', gap: 12 }}>
+          <button onClick={() => setShowAvailability(s => !s)} style={{ background: 'transparent', border: '1px solid rgba(212,136,42,0.35)', color: 'var(--gold)', padding: '12px 20px', cursor: 'pointer', fontSize: 12, fontFamily: 'var(--font-display)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+            {showAvailability ? 'Hide Availability' : 'Manage Availability'}
+          </button>
+          <button onClick={() => setShowAddForm(s => !s)} style={{ ...S.btn, width: 'auto', padding: '12px 22px' }}>{showAddForm ? 'Cancel' : '+ New Appointment'}</button>
+        </div>
       </div>
 
-      {!configured && (
-        <div style={{ marginBottom: 20, padding: '14px 20px', border: '1px solid rgba(212,136,42,0.25)', background: 'rgba(212,136,42,0.06)', fontSize: 12, color: 'rgba(232,236,240,0.85)' }}>
-          Calendly isn't connected on the backend yet (CALENDLY_TOKEN missing) — showing the booking widget only.
-        </div>
-      )}
+      {showAvailability && <AvailabilityManager />}
+
       {err && (
         <div style={{ marginBottom: 20, padding: '14px 20px', border: '1px solid rgba(248,113,113,0.3)', background: 'rgba(248,113,113,0.06)', fontSize: 12, color: '#f87171' }}>
           {err}
         </div>
       )}
+      {actionError && (
+        <div style={{ marginBottom: 20, padding: '14px 20px', border: '1px solid rgba(248,113,113,0.3)', background: 'rgba(248,113,113,0.06)', fontSize: 12, color: '#f87171' }}>
+          {actionError}
+        </div>
+      )}
 
-      {showEmbed && (
-        <div style={{ marginBottom: 28 }}>
-          <CalendlyEmbed height={650} minWidth={320} />
+      {showAddForm && (
+        <div style={{ marginBottom: 28, padding: '20px 22px', border: '1px solid rgba(212,136,42,0.2)', background: 'rgba(8,15,23,0.7)', display: 'flex', flexDirection: 'column', gap: 12 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 12 }}>
+            <input placeholder="Name *" value={addForm.name} onChange={e => setAddForm(f => ({ ...f, name: e.target.value }))} style={{ ...S.input, marginBottom: 0 }} />
+            <input placeholder="Email" type="email" value={addForm.email} onChange={e => setAddForm(f => ({ ...f, email: e.target.value }))} style={{ ...S.input, marginBottom: 0 }} />
+            <input placeholder="Phone" value={addForm.phone} onChange={e => setAddForm(f => ({ ...f, phone: e.target.value }))} style={{ ...S.input, marginBottom: 0 }} />
+            <input placeholder="Business Type" value={addForm.businessType} onChange={e => setAddForm(f => ({ ...f, businessType: e.target.value }))} style={{ ...S.input, marginBottom: 0 }} />
+            <input type="datetime-local" value={addForm.when} onChange={e => setAddForm(f => ({ ...f, when: e.target.value }))} style={{ ...S.input, marginBottom: 0 }} />
+          </div>
+          {addError && <div style={{ fontSize: 12, color: '#f87171' }}>{addError}</div>}
+          <button onClick={submitAdd} disabled={addSubmitting} style={{ ...S.btn, width: 'auto', padding: '12px 22px', opacity: addSubmitting ? 0.6 : 1 }}>
+            {addSubmitting ? 'Saving…' : 'Add Appointment'}
+          </button>
         </div>
       )}
 
@@ -386,13 +609,36 @@ function BookingsCalendar() {
             <p style={{ fontSize: 13, color: 'rgba(168,178,193,0.6)' }}>No calls booked this day.</p>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-              {selectedEvents.map(ev => (
-                <div key={ev.id} style={{ padding: '12px 14px', borderLeft: '2px solid #D4882A', background: 'rgba(212,136,42,0.05)' }}>
-                  <div style={{ fontSize: 13, color: 'var(--white)', fontWeight: 600 }}>{timeStr(ev.start_time)} – {timeStr(ev.end_time)}</div>
-                  <div style={{ fontSize: 13, color: 'rgba(232,236,240,0.85)', marginTop: 4 }}>{ev.invitee_name || ev.name || 'Booked call'}</div>
-                  {ev.invitee_email && <div style={{ fontSize: 11, color: 'rgba(212,136,42,0.75)', marginTop: 2 }}>{ev.invitee_email}</div>}
-                </div>
-              ))}
+              {selectedEvents.map(ev => {
+                const busy = actionBusyId === ev.id
+                const isRescheduling = reschedulingId === ev.id
+                return (
+                  <div key={ev.id} style={{ padding: '12px 14px', borderLeft: '2px solid #D4882A', background: 'rgba(212,136,42,0.05)', opacity: ev.status === 'cancelled' ? 0.45 : 1 }}>
+                    <div style={{ fontSize: 13, color: 'var(--white)', fontWeight: 600 }}>{timeStr(ev.start_time)} – {timeStr(ev.end_time)}</div>
+                    <div style={{ fontSize: 13, color: 'rgba(232,236,240,0.85)', marginTop: 4 }}>{ev.invitee_name || ev.name || 'Booked call'}</div>
+                    {ev.invitee_email && <div style={{ fontSize: 11, color: 'rgba(212,136,42,0.75)', marginTop: 2 }}>{ev.invitee_email}</div>}
+                    {ev.status && ev.status !== 'scheduled' && (
+                      <div style={{ fontSize: 10, letterSpacing: '0.1em', color: 'rgba(232,168,85,0.9)', marginTop: 4, textTransform: 'uppercase' }}>{ev.status.replace('_', ' ')}</div>
+                    )}
+
+                    {isRescheduling ? (
+                      <div style={{ marginTop: 10, display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
+                        <input type="datetime-local" value={rescheduleValue} onChange={e => setRescheduleValue(e.target.value)} style={{ ...S.input, marginBottom: 0, width: 'auto' }} />
+                        <button disabled={busy} onClick={() => runAction(ev.id, 'reschedule', { scheduledAt: new Date(rescheduleValue).toISOString() })} style={{ fontSize: 11, padding: '8px 12px', background: 'var(--gold)', color: '#060D14', border: 'none', cursor: 'pointer' }}>Save</button>
+                        <button disabled={busy} onClick={() => setReschedulingId(null)} style={{ fontSize: 11, padding: '8px 12px', background: 'transparent', border: '1px solid rgba(212,136,42,0.3)', color: 'rgba(232,236,240,0.8)', cursor: 'pointer' }}>Cancel</button>
+                      </div>
+                    ) : (
+                      ev.status !== 'cancelled' && (
+                        <div style={{ marginTop: 10, display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                          <button disabled={busy} onClick={() => { setReschedulingId(ev.id); setRescheduleValue('') }} style={{ fontSize: 11, padding: '6px 10px', background: 'transparent', border: '1px solid rgba(212,136,42,0.3)', color: 'var(--gold)', cursor: 'pointer' }}>Reschedule</button>
+                          <button disabled={busy} onClick={() => runAction(ev.id, 'complete')} style={{ fontSize: 11, padding: '6px 10px', background: 'transparent', border: '1px solid rgba(34,197,94,0.35)', color: '#4ade80', cursor: 'pointer' }}>Complete</button>
+                          <button disabled={busy} onClick={() => runAction(ev.id, 'cancel')} style={{ fontSize: 11, padding: '6px 10px', background: 'transparent', border: '1px solid rgba(248,113,113,0.35)', color: '#f87171', cursor: 'pointer' }}>Cancel</button>
+                        </div>
+                      )
+                    )}
+                  </div>
+                )
+              })}
             </div>
           )}
         </div>

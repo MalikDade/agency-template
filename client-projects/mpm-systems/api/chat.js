@@ -1,6 +1,7 @@
 import { getSupabase } from './_supabase.js'
+import { getAvailabilitySummary } from './_lib/availability.js'
 
-const SYSTEM_PROMPT = `You are Dan Carter, Director of Client Solutions at MPM Systems — a company from Making Power Moves LLC that builds custom AI-powered business systems for small businesses.
+const BASE_SYSTEM_PROMPT = `You are Dan Carter, Director of Client Solutions at MPM Systems — a company from Making Power Moves LLC that builds custom AI-powered business systems for small businesses.
 
 What MPM Systems builds: AI voice agents that answer the phone 24/7, automated booking systems, admin dashboards, client portals, AI chat assistants, Stripe payment integration, multilingual support, and SEO optimization. Pricing: Starter $2,500 (Foundation), Business $5,000 (The System), Enterprise $10,000+ (The Full Empire). Maintenance plans: $150, $300, or $500/month.
 
@@ -148,6 +149,17 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Messages must start with a user message' })
   }
 
+  let availabilityNote = ''
+  try {
+    const avail = await getAvailabilitySummary(7, 4)
+    availabilityNote = avail.count > 0
+      ? `\n\nLive availability (next 7 days, refreshed on every message so always current): ${avail.next.join(', ')}${avail.count > avail.next.length ? ', and more open times after that' : ''}. If asked when Dan is free, mention 2-3 of these naturally, then point them to the booking form on this page to lock it in.`
+      : `\n\nNo open slots in the next 7 days right now. If asked about availability, say things are booked solid this week and to check the booking form for the soonest opening.`
+  } catch (e) {
+    console.error('[chat] availability fetch failed', e.message)
+  }
+  const system = BASE_SYSTEM_PROMPT + availabilityNote
+
   try {
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
@@ -159,7 +171,7 @@ export default async function handler(req, res) {
       body: JSON.stringify({
         model: 'claude-haiku-4-5-20251001',
         max_tokens: 200,
-        system: SYSTEM_PROMPT,
+        system,
         messages: clean,
       }),
     })
