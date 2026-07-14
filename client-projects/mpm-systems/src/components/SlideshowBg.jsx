@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 
-export default function SlideshowBg({ images, interval = 5000, overlay = 'rgba(8,15,23,0.88)' }) {
+export default function SlideshowBg({ images, interval = 5000, overlay = 'rgba(8,15,23,0.88)', position = 'center' }) {
   const [idx, setIdx] = useState(0)
 
   useEffect(() => {
@@ -17,7 +17,7 @@ export default function SlideshowBg({ images, interval = 5000, overlay = 'rgba(8
             position: 'absolute', inset: 0,
             backgroundImage: `url(${src})`,
             backgroundSize: 'cover',
-            backgroundPosition: 'center',
+            backgroundPosition: position,
             opacity: i === idx ? 1 : 0,
             transform: i === idx ? 'scale(1.06)' : 'scale(1)',
             transition: 'opacity 2s ease-in-out, transform 8s linear',
