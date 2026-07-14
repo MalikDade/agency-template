@@ -1,8 +1,15 @@
 import { Link } from 'react-router-dom'
+import SlideshowBg from './SlideshowBg'
+
+const IMAGES = [
+  '/malik-speaking-1.jpg',
+  '/malik-speaking-2.jpg',
+]
 
 export default function AboutFounder() {
   return (
     <section style={{ padding: '140px 40px 120px', position: 'relative', overflow: 'hidden' }}>
+      <SlideshowBg images={IMAGES} interval={7000} overlay="linear-gradient(180deg, rgba(8,15,23,0.94) 0%, rgba(8,15,23,0.91) 40%, rgba(8,15,23,0.96) 100%)" />
       <div style={{ position: 'absolute', inset: 0, backgroundImage: 'radial-gradient(ellipse 70% 50% at 50% 0%, rgba(212,136,42,0.06) 0%, transparent 65%)', pointerEvents: 'none' }} />
 
       <div style={{ maxWidth: 780, margin: '0 auto', position: 'relative', zIndex: 1 }}>
