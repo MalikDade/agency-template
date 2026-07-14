@@ -9,7 +9,8 @@ const IMAGES = [
 
 export default function FounderTeaser() {
   return (
-    <section style={{ padding: '80px 40px', position: 'relative' }}>
+    <section style={{ padding: '80px 0', position: 'relative', overflow: 'hidden' }}>
+      <SlideshowBg images={IMAGES} overlay="linear-gradient(135deg, rgba(8,15,23,0.93) 0%, rgba(8,15,23,0.86) 50%, rgba(212,136,42,0.07) 100%)" />
       <div
         className="reveal"
         style={{
@@ -17,15 +18,16 @@ export default function FounderTeaser() {
           margin: '0 auto',
           padding: '48px 56px',
           border: '1px solid rgba(212,136,42,0.2)',
+          background: 'rgba(8,15,23,0.35)',
+          backdropFilter: 'blur(2px)',
           display: 'flex',
           alignItems: 'center',
           gap: 36,
           flexWrap: 'wrap',
           position: 'relative',
-          overflow: 'hidden',
+          zIndex: 1,
         }}
       >
-        <SlideshowBg images={IMAGES} overlay="linear-gradient(135deg, rgba(8,15,23,0.93) 0%, rgba(8,15,23,0.86) 50%, rgba(212,136,42,0.07) 100%)" />
         <div style={{ position: 'absolute', left: -80, top: '50%', transform: 'translateY(-50%)', width: 280, height: 280, background: 'radial-gradient(circle, rgba(212,136,42,0.1) 0%, transparent 70%)', pointerEvents: 'none' }} />
 
         {/* Malik's photo */}
